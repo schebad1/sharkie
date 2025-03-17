@@ -4,6 +4,7 @@ class Character extends MovableObject {
     width = 250;
     y = 80;
     x = 0;
+    speed = 7.5;
 
     IMAGES_SWIMMING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -23,16 +24,29 @@ class Character extends MovableObject {
     }
 
     animate() {
+
+        setInterval(() => {
+            if(this.world.keyboard.RIGHT) {
+                this.x += this.speed;
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if(this.world.keyboard.LEFT) {
+                this.x -= this.speed;
+            }
+        }, 1000 / 60);
+
         setInterval(() => {
 
-            if(this.world.keyboard.RIGHT) {
+            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                 let i = this.currentImage % this.IMAGES_SWIMMING.length;
                 let path = this.IMAGES_SWIMMING[i];
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
 
-        }, 200);
+        }, 100);
     }
 
     jump() {
