@@ -14,20 +14,24 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png',
     ];
+    world;
 
     constructor() {
         super().loadImage('img/1.Sharkie/1.IDLE/1.png')
         this.loadImages(this.IMAGES_SWIMMING);
-
         this.animate();
     }
 
     animate() {
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_SWIMMING.length;
-            let path = this.IMAGES_SWIMMING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+
+            if(this.world.keyboard.RIGHT) {
+                let i = this.currentImage % this.IMAGES_SWIMMING.length;
+                let path = this.IMAGES_SWIMMING[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+
         }, 200);
     }
 
