@@ -5,7 +5,7 @@ class BackgroundObject extends MovableObject {
     constructor(imagePath, x) {
         super(); 
         this.loadImage(imagePath);
-        this.y = canvas.height - this.height;
+        this.y = 0; // Damit alle Objekte oben starten – und du kannst sie dann im Level positionieren.
         this.x = x;
     }
 }
