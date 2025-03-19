@@ -55,6 +55,17 @@ class Character extends MovableObject {
         'img/1.Sharkie/2.Long_IDLE/i14.png',
     ];
 
+    IMAGES_FINSLAP = [
+        'img/1.Sharkie/4.Attack/Fin slap/1.png',
+        'img/1.Sharkie/4.Attack/Fin slap/2.png',
+        'img/1.Sharkie/4.Attack/Fin slap/3.png',
+        'img/1.Sharkie/4.Attack/Fin slap/4.png',
+        'img/1.Sharkie/4.Attack/Fin slap/5.png',
+        'img/1.Sharkie/4.Attack/Fin slap/6.png',
+        'img/1.Sharkie/4.Attack/Fin slap/7.png',
+        'img/1.Sharkie/4.Attack/Fin slap/8.png',
+    ];
+
     world;
 
     constructor() {
@@ -62,6 +73,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_STANDING);
         this.loadImages(this.IMAGES_SLEEPING);
+        this.loadImages(this.IMAGES_FINSLAP);
         this.animate();
     }
 
@@ -97,7 +109,7 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {
-            if (this.idleTime > 100) { 
+            if (this.idleTime > 200) { 
                 this.playAnimation(this.IMAGES_SLEEPING);
             } else if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.UP && !this.world.keyboard.DOWN && !this.world.keyboard.SPACE) {
                 this.playAnimation(this.IMAGES_STANDING);
