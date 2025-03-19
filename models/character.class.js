@@ -76,6 +76,14 @@ class Character extends MovableObject {
                 this.otherDirection = true;
             }
 
+            if(this.world.keyboard.UP && this.y > -100) {
+                this.y -= this.speed;
+            }
+
+            if(this.world.keyboard.DOWN && this.y < 220) {
+                this.y += this.speed;
+            }
+
             this.world.camera_x = -this.x;
         }, 1000 / 60);
 
@@ -86,7 +94,7 @@ class Character extends MovableObject {
         }, 130);
 
         setInterval(() => {
-            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
             }
 
