@@ -1,7 +1,6 @@
 class MovableObject {
     x = 120;
     y = 250;
-    offsetY = 50;
     img;
     height = 100;
     width = 150;
@@ -30,14 +29,14 @@ class MovableObject {
         }
     }
 
-    isColliding(obj) {
+    isColliding(object) {
         return (
-            (this.x + this.width) >= obj.x &&
-            this.x <= (obj.x + obj.width) &&
-            (this.y + this.offsetY + this.height) >= obj.y &&
-            (this.y + this.offsetY) <= (obj.y + obj.height)
+          this.x + 40 + (this.width - 80) >= object.x &&
+          this.x + 40 < object.x + object.width - 10 &&
+          this.y + 160 + (this.height - 240) > object.y &&
+          this.y + 160 < object.y + object.height - 20
         );
-    }  
+      } 
 
     loadImages(arr) {
         arr.forEach((path) => {
