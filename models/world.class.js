@@ -39,12 +39,13 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if( this.character.isColliding(enemy)) {
-             this.character.hit();
-             this.statusBar.setPercentage(this.character.energy);
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBar.setPercentage(this.character.energy);
             }
-         } )
+        });
     }
+    
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -60,6 +61,7 @@ class World {
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.throwableObject);
         this.ctx.translate(-this.camera_x, 0);
 
