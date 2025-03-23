@@ -26,6 +26,9 @@ class World {
     run() {
         setInterval(() => {
            this.checkCollisions();
+           this.checkCoinCollection();
+           this.checkPoisonCollection();
+           this.checkPoisonGroundCollection(); 
            this.checkThrowObjects();
         }, 200);
     }
@@ -45,6 +48,49 @@ class World {
             }
         });
     }
+
+    checkCoinCollection() {
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.level.coins.splice(index, 1);
+    
+                this.coinStatusBar.percentage += 25; 
+                if (this.coinStatusBar.percentage > 100) {
+                    this.coinStatusBar.percentage = 100; 
+                }
+                this.coinStatusBar.setPercentage(this.coinStatusBar.percentage);
+            }
+        });
+    }
+
+    checkPoisonCollection() {
+        this.level.poisons.forEach((poison, index) => {
+            if (this.character.isColliding(poison)) {
+                this.level.poisons.splice(index, 1); 
+    
+                this.poisonStatusBar.percentage += 25; 
+                if (this.poisonStatusBar.percentage > 100) {
+                    this.poisonStatusBar.percentage = 100;
+                }
+                this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+            }
+        });
+    }
+    
+    checkPoisonGroundCollection() {
+        this.level.poisonsGround.forEach((poisonGround, index) => {
+            if (this.character.isColliding(poisonGround)) {
+                this.level.poisonsGround.splice(index, 1); 
+        
+                this.poisonStatusBar.percentage += 25; 
+                if (this.poisonStatusBar.percentage > 100) {
+                    this.poisonStatusBar.percentage = 100;
+                }
+                this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+            }
+        });
+    }
+    
     
 
     draw() {
@@ -62,6 +108,8 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.poisons); 
+        this.addObjectsToMap(this.level.poisonsGround); 
         this.addObjectsToMap(this.throwableObject);
         this.ctx.translate(-this.camera_x, 0);
 
