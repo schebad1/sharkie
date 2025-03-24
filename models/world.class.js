@@ -30,23 +30,25 @@ class World {
            this.checkPoisonCollection();
            this.checkPoisonGroundCollection(); 
            this.checkThrowObjects();
+           this.checkFinSlap();
         }, 200);
     }
 
     checkThrowObjects() {
-        if (this.keyboard.D && !this.character.isThrowing && !this.character.isHurt()) { 
+        if (this.keyboard.D && !this.character.isThrowing && !this.character.isHurt() && !this.character.otherDirection) { 
             this.character.throwAnimation();
-    
+        
             setTimeout(() => {
                 let bubble = new ThrowableObject(
-                    this.character.x + (this.character.otherDirection ? -100 : 200), 
+                    this.character.x + 200, 
                     this.character.y + 150,
-                    this.character.otherDirection 
+                    false 
                 );
                 this.throwableObject.push(bubble);
             }, 400); 
         }
     }
+    
     
 
     checkCollisions() {
@@ -100,6 +102,11 @@ class World {
         });
     }
     
+    checkFinSlap() {
+        if (this.keyboard.SPACE && !this.character.isSlapping && !this.character.isThrowing && !this.character.isHurt()) {
+            this.character.finSlapAnimation();
+        }
+    }    
     
 
     draw() {

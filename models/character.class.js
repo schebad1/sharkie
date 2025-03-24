@@ -7,6 +7,7 @@ class Character extends MovableObject {
     speed = 7.5;
     idleTime = 0;
     isThrowing = false;
+    isSlapping = false;
 
 
     IMAGES_SWIMMING = [
@@ -117,7 +118,6 @@ class Character extends MovableObject {
     }
 
     animate() {
-        // Movement (bleibt wie gehabt)
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
@@ -136,7 +136,6 @@ class Character extends MovableObject {
     
             this.world.camera_x = -this.x;
     
-            // Reset idle time if player is moving
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE || this.isThrowing) {
                 this.idleTime = 0;
             } else {
@@ -144,7 +143,6 @@ class Character extends MovableObject {
             }
         }, 1000 / 60);
     
-        // 👉 Animation: Nur EIN zentrales Interval!
         setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -152,6 +150,8 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isThrowing) {
                 this.playAnimation(this.IMAGES_THROW_BUBBLE);
+            } else if (this.isSlapping) { 
+                this.playAnimation(this.IMAGES_FINSLAP);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
             } else if (this.idleTime > 200) {
@@ -160,6 +160,7 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STANDING);
             }
         }, 100);
+        
     }
     
 
@@ -168,7 +169,18 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_THROW_BUBBLE);
     
         setTimeout(() => {
-            this.isThrowing = false; // Nach kurzer Zeit zurück zur normalen Animation
-        }, 500); // Dauer der Animation anpassen
+            this.isThrowing = false; 
+        }, 500); 
     }
+
+    finSlapAnimation() {
+        this.isSlapping = true;
+        this.playAnimation(this.IMAGES_FINSLAP);
+    
+        setTimeout(() => {
+            this.isSlapping = false;
+        }, 500); 
+    }
+    
 }
+
