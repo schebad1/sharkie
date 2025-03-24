@@ -25,11 +25,13 @@ class Pufferfish extends MovableObject {
     this.collisionOffsetX = 40;
     this.collisionOffsetY = 40;
 
-    this.x = 400 + Math.random() * 2200;
-    this.y = 0 + Math.random() * 220;
+    this.x = 600 + Math.random() * 1800;
+
+    let minY = 0;
+    let maxY = 380;
+    this.y = minY + Math.random() * (maxY - minY);
 
     this.speed = 0.4 + Math.random() * 0.3;
-
     this.speedY = 0.5 + Math.random() * 0.3;
 
     this.animate();
@@ -44,12 +46,13 @@ class Pufferfish extends MovableObject {
 
         this.y += this.speedY;
 
-        if (this.y <= -100) {
-          this.y = -100;
+        if (this.y <= 0) {
+          this.y = 0;
           this.speedY *= -1;
         }
-        if (this.y >= 220) {
-          this.y = 220;
+
+        if (this.y >= 380) {
+          this.y = 380;
           this.speedY *= -1;
         }
       }

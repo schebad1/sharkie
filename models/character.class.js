@@ -118,25 +118,30 @@ class Character extends MovableObject {
     }
 
     animate() {
+        const bossBlockX = 3400; 
+
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            if (this.world.keyboard.RIGHT && this.x < bossBlockX) {
                 this.x += this.speed;
                 this.otherDirection = false;
             }
+    
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
             }
+    
             if (this.world.keyboard.UP && this.y > -100) {
                 this.y -= this.speed;
             }
+    
             if (this.world.keyboard.DOWN && this.y < 220) {
                 this.y += this.speed;
             }
     
             this.world.camera_x = -this.x;
     
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE || this.isThrowing) {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE) {
                 this.idleTime = 0;
             } else {
                 this.idleTime++;

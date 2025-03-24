@@ -68,6 +68,11 @@ class World {
           offsetY = enemy.collisionOffsetY;
         }
 
+        if (enemy instanceof PurpleJellyfish) {
+            offsetX = enemy.collisionOffsetX;
+            offsetY = enemy.collisionOffsetY;
+          }
+
         if (this.character.isCollidingWithOffset(enemy, offsetX, offsetY)) {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
@@ -142,28 +147,43 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    // === KAMERA-BERECHNUNG + BEGRENZUNG ===
+    this.camera_x = -this.character.x;
+
+    // WICHTIG: Kamera maximal begrenzen!
+    let maxCameraX = -(this.level.level_end_x - this.canvas.width + 150);
+    if (this.camera_x < maxCameraX) {
+        this.camera_x = maxCameraX;
+    }
+
+    // === HINTERGRUND OBJEKTE ===
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
 
+    // === UI ELEMENTE ===
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.poisonStatusBar);
     this.ctx.translate(this.camera_x, 0);
 
+    // === SPIEL OBJEKTE ===
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.poisons);
     this.addObjectsToMap(this.level.poisonsGround);
     this.addObjectsToMap(this.throwableObject);
+
     this.ctx.translate(-this.camera_x, 0);
 
+    // === NEUER FRAME ===
     self = this;
     requestAnimationFrame(function () {
       self.draw();
     });
-  }
+}
+
 
   addObjectsToMap(objects) {
     objects.forEach((o) => {
