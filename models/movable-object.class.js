@@ -13,6 +13,15 @@ class MovableObject extends DrawableObject {
         );
       } 
 
+      isCollidingWithOffset(object, offsetX = 0, offsetY = 0) {
+        return (
+            this.x + offsetX < object.x + object.width - offsetX &&
+            this.x + this.width - offsetX > object.x + offsetX &&
+            this.y + offsetY < object.y + object.height - offsetY &&
+            this.y + this.height - offsetY > object.y + offsetY
+        );
+    }    
+
     hit() {
         this.energy -= 5;
         if(this.energy < 0) {
