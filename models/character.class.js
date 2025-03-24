@@ -6,6 +6,8 @@ class Character extends MovableObject {
     x = 0;
     speed = 7.5;
     idleTime = 0;
+    isThrowing = false;
+
 
     IMAGES_SWIMMING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -89,6 +91,17 @@ class Character extends MovableObject {
         'img/1.Sharkie/5.Hurt/1.Poisoned/5.png',
     ];
 
+    IMAGES_THROW_BUBBLE = [
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
+    ];
+
     world;
 
     constructor() {
@@ -99,62 +112,63 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_FINSLAP);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_THROW_BUBBLE);
         this.animate();
     }
 
     animate() {
-
+        // Movement (bleibt wie gehabt)
         setInterval(() => {
-            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
             }
-
-            if(this.world.keyboard.LEFT && this.x > 0) {
+            if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
             }
-
-            if(this.world.keyboard.UP && this.y > -100) {
+            if (this.world.keyboard.UP && this.y > -100) {
                 this.y -= this.speed;
             }
-
-            if(this.world.keyboard.DOWN && this.y < 220) {
+            if (this.world.keyboard.DOWN && this.y < 220) {
                 this.y += this.speed;
             }
-
+    
             this.world.camera_x = -this.x;
-
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE) {
-                this.idleTime = 0; 
+    
+            // Reset idle time if player is moving
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE || this.isThrowing) {
+                this.idleTime = 0;
             } else {
-                this.idleTime++; 
+                this.idleTime++;
             }
-            
         }, 1000 / 60);
-
+    
+        // 👉 Animation: Nur EIN zentrales Interval!
         setInterval(() => {
-            if (this.idleTime > 200) { 
-                this.playAnimation(this.IMAGES_SLEEPING);
-            } else if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.UP && !this.world.keyboard.DOWN && !this.world.keyboard.SPACE) {
-                this.playAnimation(this.IMAGES_STANDING);
-            }
-        }, 130);
-
-        setInterval(() => {
-
-            if(this.isDead()) {
+            if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isThrowing) {
+                this.playAnimation(this.IMAGES_THROW_BUBBLE);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
+            } else if (this.idleTime > 200) {
+                this.playAnimation(this.IMAGES_SLEEPING);
+            } else {
+                this.playAnimation(this.IMAGES_STANDING);
             }
-
         }, 100);
     }
+    
 
-    jump() {
-
+    throwAnimation() {
+        this.isThrowing = true;
+        this.playAnimation(this.IMAGES_THROW_BUBBLE);
+    
+        setTimeout(() => {
+            this.isThrowing = false; // Nach kurzer Zeit zurück zur normalen Animation
+        }, 500); // Dauer der Animation anpassen
     }
 }
