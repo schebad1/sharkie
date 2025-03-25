@@ -34,14 +34,22 @@ class MovableObject extends DrawableObject {
 }
 
 
-  hit() {
-    this.energy -= 5;
-    if (this.energy < 0) {
-      this.energy = 0;
-    } else {
-      this.lastHit = new Date().getTime();
-    }
+hit(fromEnemy) {
+  let damage = 2.5;
+
+  if (fromEnemy instanceof GreenJellyfish || fromEnemy instanceof PinkJellyfish) {
+    damage = 10; 
   }
+
+  this.energy -= damage;
+
+  if (this.energy < 0) {
+    this.energy = 0;
+  } else {
+    this.lastHit = new Date().getTime();
+  }
+}
+
 
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;

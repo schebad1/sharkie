@@ -62,12 +62,13 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (!this.character.isSlapping && !enemy.isDead) {
         if (this.character.isColliding(enemy)) {
-          this.character.hit();
+          this.character.hit(enemy); 
           this.statusBar.setPercentage(this.character.energy);
         }
       }
     });
   }
+
   
   checkCoinCollection() {
     this.level.coins.forEach((coin, index) => {
