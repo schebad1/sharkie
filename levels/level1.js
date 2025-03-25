@@ -5,9 +5,16 @@ const level1 = new Level(
         new Pufferfish(),
         new PurpleJellyfish(1100, 350),
         new PurpleJellyfish(1225, 200),
+      
+        new GreenJellyfish(2000, 350),
+        new PinkJellyfish(2200, 200),
+
+  
 
         new Pufferfish(2500, 150),
         new PurpleJellyfish(2700, 250),
+        new YellowJellyfish(2900, 300),
+        new YellowJellyfish(2950, 250),
         new Pufferfish(3000, 100),
 
         new Endboss(), 

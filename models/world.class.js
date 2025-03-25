@@ -136,7 +136,10 @@ class World {
     this.throwableObject.forEach((bubble, bubbleIndex) => {
       this.level.enemies.forEach((enemy) => {
         if (
-          enemy instanceof PurpleJellyfish &&
+          (enemy instanceof PurpleJellyfish || 
+           enemy instanceof YellowJellyfish || 
+           enemy instanceof PinkJellyfish || 
+           enemy instanceof GreenJellyfish) &&
           !enemy.isDead &&
           bubble.isColliding(enemy)
         ) {
@@ -146,6 +149,7 @@ class World {
       });
     });
   }
+  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

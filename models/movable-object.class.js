@@ -11,23 +11,28 @@ class MovableObject extends DrawableObject {
   };
 
   isColliding(other) {
-    let leftA   = this.x + this.offset.left;
-    let rightA  = this.x + this.width - this.offset.right;
-    let topA    = this.y + this.offset.top;
-    let bottomA = this.y + this.height - this.offset.bottom;
+    const a = {
+        x: this.x + (this.offset?.left || 0),
+        y: this.y + (this.offset?.top || 0),
+        width: this.width - (this.offset?.left || 0) - (this.offset?.right || 0),
+        height: this.height - (this.offset?.top || 0) - (this.offset?.bottom || 0),
+    };
 
-    let leftB   = other.x + other.offset.left;
-    let rightB  = other.x + other.width - other.offset.right;
-    let topB    = other.y + other.offset.top;
-    let bottomB = other.y + other.height - other.offset.bottom;
+    const b = {
+        x: other.x + (other.offset?.left || 0),
+        y: other.y + (other.offset?.top || 0),
+        width: other.width - (other.offset?.left || 0) - (other.offset?.right || 0),
+        height: other.height - (other.offset?.top || 0) - (other.offset?.bottom || 0),
+    };
 
     return (
-      rightA >= leftB &&
-      leftA <= rightB &&
-      bottomA >= topB &&
-      topA <= bottomB
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
     );
-  }
+}
+
 
   hit() {
     this.energy -= 5;

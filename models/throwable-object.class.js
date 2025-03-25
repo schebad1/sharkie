@@ -8,6 +8,12 @@ class ThrowableObject extends MovableObject {
         this.width = 50;
         this.otherDirection = otherDirection; 
         this.throw();
+        this.offset = {
+            top: 5,
+            right: 5,
+            bottom: 5,
+            left: 5
+          };
     }
     
 

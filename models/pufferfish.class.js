@@ -23,12 +23,12 @@ class Pufferfish extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
 
     this.offset = {
-      top: 70,
-      right: 50,
-      bottom: 70,
-      left: 50
+      top: 10,
+      right: 10,
+      bottom: 20,
+      left: 10
     };
-
+    
     this.x = 600 + Math.random() * 1800;
 
     let minY = 0;

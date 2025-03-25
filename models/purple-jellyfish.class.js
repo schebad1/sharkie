@@ -31,11 +31,11 @@ class PurpleJellyfish extends MovableObject {
   
       this.animate();
       this.offset = {
-        top: 70,
-        right: 50,
-        bottom: 70,
-        left: 50
-      };  
+        top: 25,
+        right: 25,
+        bottom: 25,
+        left: 25
+      };       
     }
   
     animate() {
