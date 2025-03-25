@@ -34,6 +34,7 @@ class World {
       this.checkPoisonCollection();
       this.checkPoisonGroundCollection();
       this.checkThrowObjects();
+      this.checkBubbleHits();
     }, 200);
   }
 
@@ -60,27 +61,14 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (!this.character.isSlapping && !enemy.isDead) {
-        let offsetX = 30;
-        let offsetY = 30;
-
-        if (enemy instanceof Pufferfish) {
-          offsetX = enemy.collisionOffsetX;
-          offsetY = enemy.collisionOffsetY;
-        }
-
-        if (enemy instanceof PurpleJellyfish) {
-            offsetX = enemy.collisionOffsetX;
-            offsetY = enemy.collisionOffsetY;
-          }
-
-        if (this.character.isCollidingWithOffset(enemy, offsetX, offsetY)) {
+        if (this.character.isColliding(enemy)) {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
         }
       }
     });
   }
-
+  
   checkCoinCollection() {
     this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin)) {
@@ -144,30 +132,40 @@ class World {
     }
   }
 
+  checkBubbleHits() {
+    this.throwableObject.forEach((bubble, bubbleIndex) => {
+      this.level.enemies.forEach((enemy) => {
+        if (
+          enemy instanceof PurpleJellyfish &&
+          !enemy.isDead &&
+          bubble.isColliding(enemy)
+        ) {
+          this.throwableObject.splice(bubbleIndex, 1);
+          enemy.die();
+        }
+      });
+    });
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // === KAMERA-BERECHNUNG + BEGRENZUNG ===
     this.camera_x = -this.character.x;
 
-    // WICHTIG: Kamera maximal begrenzen!
     let maxCameraX = -(this.level.level_end_x - this.canvas.width + 150);
     if (this.camera_x < maxCameraX) {
-        this.camera_x = maxCameraX;
+      this.camera_x = maxCameraX;
     }
 
-    // === HINTERGRUND OBJEKTE ===
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
 
-    // === UI ELEMENTE ===
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.poisonStatusBar);
     this.ctx.translate(this.camera_x, 0);
 
-    // === SPIEL OBJEKTE ===
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.coins);
@@ -177,13 +175,11 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
 
-    // === NEUER FRAME ===
     self = this;
     requestAnimationFrame(function () {
       self.draw();
     });
-}
-
+  }
 
   addObjectsToMap(objects) {
     objects.forEach((o) => {

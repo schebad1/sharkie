@@ -9,7 +9,7 @@ const level1 = new Level(
         new Pufferfish(2500, 150),
         new PurpleJellyfish(2700, 250),
         new Pufferfish(3000, 100),
-        new PurpleJellyfish(3300, 300),
+
         new Endboss(), 
     ],
 
@@ -75,8 +75,8 @@ new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 719*5),
         new Coin(2600, 150),
         new Coin(2700, 200),
         new Coin(3000, 250),
-        new Coin(3500, 300),
-        new Coin(3800, 100),
+        new Coin(3100, 250),
+        new Coin(3200, 250),
     ],
 
     [

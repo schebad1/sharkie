@@ -22,8 +22,12 @@ class Pufferfish extends MovableObject {
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_DEAD);
 
-    this.collisionOffsetX = 40;
-    this.collisionOffsetY = 40;
+    this.offset = {
+      top: 70,
+      right: 50,
+      bottom: 70,
+      left: 50
+    };
 
     this.x = 600 + Math.random() * 1800;
 

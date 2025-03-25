@@ -115,10 +115,16 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_THROW_BUBBLE);
         this.animate();
+        this.offset = {
+            top: 80,
+            right: 40,
+            bottom: 20,
+            left: 40
+          };
     }
 
     animate() {
-        const bossBlockX = 3400; 
+        const bossBlockX = 3325; 
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < bossBlockX) {
