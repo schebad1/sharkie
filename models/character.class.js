@@ -8,6 +8,7 @@ class Character extends MovableObject {
     idleTime = 0;
     isThrowing = false;
     isSlapping = false;
+    isThrowingSpecial = false;
 
 
     IMAGES_SWIMMING = [
@@ -103,6 +104,17 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
     ];
 
+    IMAGES_THROW_BUBBLE_POISON = [
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/1.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/2.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/3.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/4.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/5.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/6.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/7.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png',
+    ];
+
     world;
 
     constructor() {
@@ -114,6 +126,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_THROW_BUBBLE);
+        this.loadImages(this.IMAGES_THROW_BUBBLE_POISON);
         this.animate();
         this.offset = {
             top: 130,
@@ -163,15 +176,23 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_THROW_BUBBLE);
             } else if (this.isSlapping) { 
                 this.playAnimation(this.IMAGES_FINSLAP);
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+            } 
+            else if (this.isThrowingSpecial) {
+                this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
+            }
+            else if (
+                this.world.keyboard.RIGHT || 
+                this.world.keyboard.LEFT || 
+                this.world.keyboard.UP || 
+                this.world.keyboard.DOWN
+            ) {
                 this.playAnimation(this.IMAGES_SWIMMING);
             } else if (this.idleTime > 200) {
                 this.playAnimation(this.IMAGES_SLEEPING);
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
             }
-        }, 100);
-        
+        }, 100);        
     }
     
 
@@ -193,5 +214,13 @@ class Character extends MovableObject {
         }, 500); 
     }
     
+    throwPoisonBubbleAnimation() {
+        this.isThrowingSpecial = true;
+        this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
+    
+        setTimeout(() => {
+            this.isThrowingSpecial = false;
+        }, 500); 
+    }
 }
 

@@ -9,6 +9,7 @@ class World {
   coinStatusBar = new CoinStatusBar();
   poisonStatusBar = new PoisonStatusBar();
   throwableObject = [];
+  poisonShotsUsed = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -46,18 +47,46 @@ class World {
       !this.character.otherDirection
     ) {
       this.character.throwAnimation();
-
       setTimeout(() => {
         let bubble = new ThrowableObject(
           this.character.x + 200,
           this.character.y + 150,
+          false,
           false
         );
         this.throwableObject.push(bubble);
       }, 400);
     }
+  
+    if (
+      this.keyboard.F &&
+      !this.character.isThrowingSpecial &&
+      !this.character.isHurt() &&
+      !this.character.otherDirection &&
+      this.poisonStatusBar.percentage >= 20
+    ) {
+      this.character.throwPoisonBubbleAnimation();
+      setTimeout(() => {
+        let poisonBubble = new ThrowableObject(
+          this.character.x + 200,
+          this.character.y + 150,
+          false,
+          true
+        );
+        this.throwableObject.push(poisonBubble);
+        this.poisonShotsUsed++;
+        if (this.poisonShotsUsed >= 2) {
+          this.poisonShotsUsed = 0;
+          this.poisonStatusBar.percentage -= 20;
+          if (this.poisonStatusBar.percentage < 0) {
+            this.poisonStatusBar.percentage = 0;
+          }
+          this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+        }
+      }, 400);
+    }
   }
-
+  
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (!this.character.isSlapping && !enemy.isDead) {
@@ -75,7 +104,7 @@ class World {
       if (this.character.isColliding(coin)) {
         this.level.coins.splice(index, 1);
 
-        this.coinStatusBar.percentage += 25;
+        this.coinStatusBar.percentage += 20;
         if (this.coinStatusBar.percentage > 100) {
           this.coinStatusBar.percentage = 100;
         }
@@ -89,7 +118,7 @@ class World {
       if (this.character.isColliding(poison)) {
         this.level.poisons.splice(index, 1);
 
-        this.poisonStatusBar.percentage += 25;
+        this.poisonStatusBar.percentage += 20;
         if (this.poisonStatusBar.percentage > 100) {
           this.poisonStatusBar.percentage = 100;
         }
@@ -103,7 +132,7 @@ class World {
       if (this.character.isColliding(poisonGround)) {
         this.level.poisonsGround.splice(index, 1);
 
-        this.poisonStatusBar.percentage += 25;
+        this.poisonStatusBar.percentage += 20;
         if (this.poisonStatusBar.percentage > 100) {
           this.poisonStatusBar.percentage = 100;
         }
@@ -136,10 +165,13 @@ class World {
   checkBubbleHits() {
     this.throwableObject.forEach((bubble, bubbleIndex) => {
       this.level.enemies.forEach((enemy) => {
+        let isStandardBubble = !bubble.isPoisonBubble;
+  
         if (
-          (enemy instanceof PurpleJellyfish || 
-           enemy instanceof YellowJellyfish || 
-           enemy instanceof PinkJellyfish || 
+          isStandardBubble &&
+          (enemy instanceof PurpleJellyfish ||
+           enemy instanceof YellowJellyfish ||
+           enemy instanceof PinkJellyfish ||
            enemy instanceof GreenJellyfish) &&
           !enemy.isDead &&
           bubble.isColliding(enemy)
@@ -150,6 +182,7 @@ class World {
       });
     });
   }
+  
   
 
   draw() {
