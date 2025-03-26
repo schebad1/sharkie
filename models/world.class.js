@@ -36,6 +36,7 @@ class World {
       this.checkPoisonGroundCollection();
       this.checkThrowObjects();
       this.checkBubbleHits();
+      this.checkEndbossIntro();
     }, 200);
   }
 
@@ -183,7 +184,15 @@ class World {
     });
   }
   
-  
+  checkEndbossIntro() {
+    if (
+        this.character.x >= 3300 &&
+        this.level.endboss &&
+        !this.level.endboss.hasEntered
+    ) {
+        this.level.endboss.startIntro();
+    }
+}
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

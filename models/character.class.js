@@ -4,7 +4,7 @@ class Character extends MovableObject {
     width = 250;
     y = 80;
     x = 0;
-    speed = 7.5;
+    speed = 6;
     idleTime = 0;
     isThrowing = false;
     isSlapping = false;
@@ -137,7 +137,7 @@ class Character extends MovableObject {
     }
 
     animate() {
-        const bossBlockX = 3325; 
+        const bossBlockX = 3375; 
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < bossBlockX) {

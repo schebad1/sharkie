@@ -3,7 +3,7 @@ class Endboss extends MovableObject {
     width = 400;
     isActive = false;
     hasEntered = false;
-    
+
     IMAGES_SWIMMING = [
         'img/2.Enemy/3 Final Enemy/2.floating/1.png',
         'img/2.Enemy/3 Final Enemy/2.floating/2.png',
@@ -32,15 +32,39 @@ class Endboss extends MovableObject {
     ];
 
     constructor() {
-        super().loadImage('img/2.Enemy/3 Final Enemy/2.floating/1.png');
+        super().loadImage('img/2.Enemy/3 Final Enemy/1.Introduce/1.png');
+        this.loadImages(this.IMAGES_INTRO);
         this.loadImages(this.IMAGES_SWIMMING);
         this.x = 3700;
-        this.animate();
+        this.y = -150;
     }
 
-    animate() {
+    startIntro() {
+        this.hasEntered = true;
+        let i = 0;
+        let steps = this.IMAGES_INTRO.length; 
+        let distance = 200;                    
+        let stepSize = distance / steps;       
+      
+        let introInterval = setInterval(() => {
+          this.img = this.imageCache[this.IMAGES_INTRO[i]];
+          this.y += stepSize;
+          i++;
+      
+          if (i >= steps) {
+            clearInterval(introInterval);
+            this.y = 0;         
+            this.startFloating();
+            this.isActive = true;
+          }
+        }, 150);
+      }
+      
+      
+
+    startFloating() {
         setInterval(() => {
-                this.playAnimation(this.IMAGES_SWIMMING);
-        }, 200)
+            this.playAnimation(this.IMAGES_SWIMMING);
+        }, 200);
     }
 }
