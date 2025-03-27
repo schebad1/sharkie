@@ -43,6 +43,7 @@ class World {
 
   checkThrowObjects() {
     if (
+      !this.character.isDead() &&
       this.keyboard.D &&
       !this.character.isThrowing &&
       !this.character.isHurt() &&
@@ -59,8 +60,8 @@ class World {
         this.throwableObject.push(bubble);
       }, 400);
     }
-  
     if (
+      !this.character.isDead() &&
       this.keyboard.F &&
       !this.character.isThrowingSpecial &&
       !this.character.isHurt() &&
@@ -88,18 +89,17 @@ class World {
       }, 400);
     }
   }
-  
+
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (!this.character.isSlapping && !enemy.isDead) {
+      if (!this.character.isDead() && !this.character.isSlapping && !enemy.isDead) {
         if (this.character.isColliding(enemy)) {
           this.character.hit(enemy);
           this.statusBar.setPercentage(this.character.energy);
         }
       }
     });
-  
-    if (this.level.endboss && !this.level.endboss.isDead()) { 
+    if (!this.character.isDead() && this.level.endboss && !this.level.endboss.isDead()) {
       if (this.character.isColliding(this.level.endboss)) {
         this.character.hit(this.level.endboss);
         this.statusBar.setPercentage(this.character.energy);
@@ -107,13 +107,10 @@ class World {
     }
   }
 
-
-  
   checkCoinCollection() {
     this.level.coins.forEach((coin, index) => {
-      if (this.character.isColliding(coin)) {
+      if (!this.character.isDead() && this.character.isColliding(coin)) {
         this.level.coins.splice(index, 1);
-
         this.coinStatusBar.percentage += 20;
         if (this.coinStatusBar.percentage > 100) {
           this.coinStatusBar.percentage = 100;
@@ -125,9 +122,8 @@ class World {
 
   checkPoisonCollection() {
     this.level.poisons.forEach((poison, index) => {
-      if (this.character.isColliding(poison)) {
+      if (!this.character.isDead() && this.character.isColliding(poison)) {
         this.level.poisons.splice(index, 1);
-
         this.poisonStatusBar.percentage += 20;
         if (this.poisonStatusBar.percentage > 100) {
           this.poisonStatusBar.percentage = 100;
@@ -139,9 +135,8 @@ class World {
 
   checkPoisonGroundCollection() {
     this.level.poisonsGround.forEach((poisonGround, index) => {
-      if (this.character.isColliding(poisonGround)) {
+      if (!this.character.isDead() && this.character.isColliding(poisonGround)) {
         this.level.poisonsGround.splice(index, 1);
-
         this.poisonStatusBar.percentage += 20;
         if (this.poisonStatusBar.percentage > 100) {
           this.poisonStatusBar.percentage = 100;
@@ -153,14 +148,14 @@ class World {
 
   checkFinSlap() {
     if (
+      !this.character.isDead() &&
       this.keyboard.SPACE &&
       !this.character.isSlapping &&
       !this.character.isThrowing &&
       !this.character.isHurt()
     ) {
       this.character.finSlapAnimation();
-
-      this.level.enemies.forEach((enemy, index) => {
+      this.level.enemies.forEach((enemy) => {
         if (
           enemy instanceof Pufferfish &&
           !enemy.isDead &&
@@ -173,78 +168,78 @@ class World {
   }
 
   checkBubbleHits() {
-    this.throwableObject.forEach((bubble, bubbleIndex) => {
-        this.level.enemies.forEach((enemy) => {
-            let isStandardBubble = !bubble.isPoisonBubble;
-
-            if (
-                isStandardBubble &&
-                (enemy instanceof PurpleJellyfish ||
-                 enemy instanceof YellowJellyfish ||
-                 enemy instanceof PinkJellyfish ||
-                 enemy instanceof GreenJellyfish) &&
-                !enemy.isDead &&
-                bubble.isColliding(enemy)
-            ) {
-                this.throwableObject.splice(bubbleIndex, 1);
-                enemy.die();
-            }
-        });
-
-        if (bubble.isPoisonBubble && this.level.endboss) {
-            if (bubble.isColliding(this.level.endboss)) {
-                this.level.endboss.hit();
-                this.throwableObject.splice(bubbleIndex, 1);
-            }
-        }
-    });
-}
-
+    for (let i = this.throwableObject.length - 1; i >= 0; i--) {
+      let bubble = this.throwableObject[i];
+      if (!this.character.isDead()) {
+        for (let enemy of this.level.enemies) {
+          let isStandardBubble = !bubble.isPoisonBubble;
   
+          if (
+            isStandardBubble &&
+            (enemy instanceof PurpleJellyfish ||
+             enemy instanceof YellowJellyfish ||
+             enemy instanceof PinkJellyfish ||
+             enemy instanceof GreenJellyfish) &&
+            !enemy.isDead &&
+            bubble.isColliding(enemy)
+          ) {
+            this.throwableObject.splice(i, 1);
+            enemy.die();
+            break; 
+          }
+  
+          if (
+            bubble.isPoisonBubble &&
+            this.level.endboss &&
+            !this.level.endboss.isDead() &&
+            bubble.isColliding(this.level.endboss)
+          ) {
+            this.level.endboss.hit();
+            this.throwableObject.splice(i, 1);
+            break; 
+          }
+        }
+      }
+    }
+  }
+  
+
   checkEndbossIntro() {
-    if (this.character.x >= 3300 && this.level.endboss && !this.level.endboss.hasEntered) {
-        this.level.endboss.startIntro();
+    if (!this.character.isDead() && this.character.x >= 3300 && this.level.endboss && !this.level.endboss.hasEntered) {
+      this.level.endboss.startIntro();
     }
-}
+  }
 
-checkBubbleTimeout() {
-  this.throwableObject.forEach((bubble, i) => {
-    if (Date.now() - bubble.birthTime > bubble.lifetime) {
-      this.throwableObject.splice(i, 1); 
-    }
-  });
-}
-
+  checkBubbleTimeout() {
+    this.throwableObject.forEach((bubble, i) => {
+      if (Date.now() - bubble.birthTime > bubble.lifetime) {
+        this.throwableObject.splice(i, 1);
+      }
+    });
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.camera_x = -this.character.x;
-
     let maxCameraX = -(this.level.level_end_x - this.canvas.width + 150);
     if (this.camera_x < maxCameraX) {
       this.camera_x = maxCameraX;
     }
-
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
-
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.poisonStatusBar);
     this.ctx.translate(this.camera_x, 0);
-
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.poisons);
     this.addObjectsToMap(this.level.poisonsGround);
     this.addObjectsToMap(this.throwableObject);
-
     this.ctx.translate(-this.camera_x, 0);
-
-    self = this;
+    let self = this;
     requestAnimationFrame(function () {
       self.draw();
     });
@@ -263,7 +258,6 @@ checkBubbleTimeout() {
       }
       mo.draw(this.ctx);
       mo.drawFrame(this.ctx);
-
       if (mo.otherDirection) {
         this.flipImageBack(mo);
       }
