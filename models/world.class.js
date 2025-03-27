@@ -37,6 +37,7 @@ class World {
       this.checkThrowObjects();
       this.checkBubbleHits();
       this.checkEndbossIntro();
+      this.checkBubbleTimeout();
     }, 200);
   }
 
@@ -205,6 +206,15 @@ class World {
         this.level.endboss.startIntro();
     }
 }
+
+checkBubbleTimeout() {
+  this.throwableObject.forEach((bubble, i) => {
+    if (Date.now() - bubble.birthTime > bubble.lifetime) {
+      this.throwableObject.splice(i, 1); 
+    }
+  });
+}
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

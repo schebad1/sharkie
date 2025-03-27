@@ -23,6 +23,8 @@ class ThrowableObject extends MovableObject {
         }
 
         this.loadImage(imagePath);
+        this.birthTime = Date.now();  
+        this.lifetime = 1500;  
         this.throw();
     }
 

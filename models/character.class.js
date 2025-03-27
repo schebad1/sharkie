@@ -137,31 +137,43 @@ class Character extends MovableObject {
     }
 
     animate() {
-        const bossBlockX = 3375; 
-
+        const bossBlockX = 3375;
+    
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < bossBlockX) {
                 this.x += this.speed;
                 this.otherDirection = false;
+                this.idleTime = 0; 
             }
-    
+        
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
+                this.idleTime = 0;
             }
-    
+        
             if (this.world.keyboard.UP && this.y > -100) {
                 this.y -= this.speed;
+                this.idleTime = 0;
             }
-    
+        
             if (this.world.keyboard.DOWN && this.y < 220) {
                 this.y += this.speed;
+                this.idleTime = 0;
             }
     
             this.world.camera_x = -this.x;
     
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.SPACE) {
-                this.idleTime = 0;
+            if (
+                this.world.keyboard.RIGHT || 
+                this.world.keyboard.LEFT || 
+                this.world.keyboard.UP || 
+                this.world.keyboard.DOWN || 
+                this.world.keyboard.SPACE || 
+                this.isThrowing || 
+                this.isThrowingSpecial
+            ) {
+                this.idleTime = 0; 
             } else {
                 this.idleTime++;
             }
@@ -176,18 +188,16 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_THROW_BUBBLE);
             } else if (this.isSlapping) { 
                 this.playAnimation(this.IMAGES_FINSLAP);
-            } 
-            else if (this.isThrowingSpecial) {
+            } else if (this.isThrowingSpecial) {
                 this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
-            }
-            else if (
+            } else if (
                 this.world.keyboard.RIGHT || 
                 this.world.keyboard.LEFT || 
                 this.world.keyboard.UP || 
                 this.world.keyboard.DOWN
             ) {
                 this.playAnimation(this.IMAGES_SWIMMING);
-            } else if (this.idleTime > 200) {
+            } else if (this.idleTime > 200 && !this.isThrowing && !this.isThrowingSpecial) {
                 this.playAnimation(this.IMAGES_SLEEPING);
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
@@ -195,15 +205,18 @@ class Character extends MovableObject {
         }, 100);        
     }
     
+    
 
     throwAnimation() {
         this.isThrowing = true;
         this.playAnimation(this.IMAGES_THROW_BUBBLE);
     
         setTimeout(() => {
-            this.isThrowing = false; 
-        }, 500); 
+            this.isThrowing = false;
+            this.idleTime = 0; 
+        }, 500);
     }
+    
 
     finSlapAnimation() {
         this.isSlapping = true;
@@ -220,7 +233,9 @@ class Character extends MovableObject {
     
         setTimeout(() => {
             this.isThrowingSpecial = false;
-        }, 500); 
+            this.idleTime = 0; 
+        }, 500);
     }
+    
 }
 
