@@ -3,6 +3,13 @@ class Endboss extends MovableObject {
     width = 400;
     isActive = false;
     hasEntered = false;
+    offset = {
+        top: 150,
+        right: 40,
+        bottom: 60,
+        left: 40
+    };
+    
 
     IMAGES_SWIMMING = [
         'img/2.Enemy/3 Final Enemy/2.floating/1.png',
@@ -31,12 +38,23 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3 Final Enemy/1.Introduce/10.png',
     ];
 
+    IMAGES_ATTACK = [
+        'img/2.Enemy/3 Final Enemy/Attack/1.png',
+        'img/2.Enemy/3 Final Enemy/Attack/2.png',
+        'img/2.Enemy/3 Final Enemy/Attack/3.png',
+        'img/2.Enemy/3 Final Enemy/Attack/4.png',
+        'img/2.Enemy/3 Final Enemy/Attack/5.png',
+        'img/2.Enemy/3 Final Enemy/Attack/6.png',
+    ];
+
     constructor() {
         super().loadImage('img/2.Enemy/3 Final Enemy/1.Introduce/1.png');
         this.loadImages(this.IMAGES_INTRO);
         this.loadImages(this.IMAGES_SWIMMING);
+        this.loadImages(this.IMAGES_ATTACK);
         this.x = 3700;
         this.y = -150;
+        this.speed = 1.5;
     }
 
     startIntro() {
@@ -60,11 +78,37 @@ class Endboss extends MovableObject {
         }, 150);
       }
       
-      
-
-    startFloating() {
-        setInterval(() => {
+      startFloating() {
+        this.floatingInterval = setInterval(() => {
+          if (!this.isAttacking) {
             this.playAnimation(this.IMAGES_SWIMMING);
+          }
         }, 200);
-    }
+      
+        this.moveLeft();
+        this.startAttackCycle();
+      }
+      
+      startAttackCycle() {
+        setInterval(() => {
+          if (this.isActive && !this.isDead()) {  
+            this.isAttacking = true;             
+            let originalSpeed = this.speed;
+            this.speed = 0;
+      
+            let i = 0;
+            const attackInterval = setInterval(() => {
+              this.img = this.imageCache[this.IMAGES_ATTACK[i]];
+              i++;
+              if (i >= this.IMAGES_ATTACK.length) {
+                clearInterval(attackInterval);
+                this.speed = originalSpeed;
+                this.isAttacking = false;        
+              }
+            }, 120);
+          }
+        }, 3000);
+      }
+      
+    
 }

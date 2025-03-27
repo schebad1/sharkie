@@ -41,6 +41,10 @@ hit(fromEnemy) {
     damage = 10; 
   }
 
+  if (fromEnemy instanceof Endboss) {
+    damage = 20; 
+  }
+
   this.energy -= damage;
 
   if (this.energy < 0) {
@@ -49,6 +53,7 @@ hit(fromEnemy) {
     this.lastHit = new Date().getTime();
   }
 }
+
 
 
   isHurt() {
