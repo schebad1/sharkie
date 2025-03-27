@@ -92,12 +92,20 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (!this.character.isSlapping && !enemy.isDead) {
         if (this.character.isColliding(enemy)) {
-          this.character.hit(enemy); 
+          this.character.hit(enemy);
           this.statusBar.setPercentage(this.character.energy);
         }
       }
     });
+  
+    if (this.level.endboss && !this.level.endboss.isDead()) { 
+      if (this.character.isColliding(this.level.endboss)) {
+        this.character.hit(this.level.endboss);
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    }
   }
+
 
   
   checkCoinCollection() {
@@ -165,31 +173,35 @@ class World {
 
   checkBubbleHits() {
     this.throwableObject.forEach((bubble, bubbleIndex) => {
-      this.level.enemies.forEach((enemy) => {
-        let isStandardBubble = !bubble.isPoisonBubble;
-  
-        if (
-          isStandardBubble &&
-          (enemy instanceof PurpleJellyfish ||
-           enemy instanceof YellowJellyfish ||
-           enemy instanceof PinkJellyfish ||
-           enemy instanceof GreenJellyfish) &&
-          !enemy.isDead &&
-          bubble.isColliding(enemy)
-        ) {
-          this.throwableObject.splice(bubbleIndex, 1);
-          enemy.die();
+        this.level.enemies.forEach((enemy) => {
+            let isStandardBubble = !bubble.isPoisonBubble;
+
+            if (
+                isStandardBubble &&
+                (enemy instanceof PurpleJellyfish ||
+                 enemy instanceof YellowJellyfish ||
+                 enemy instanceof PinkJellyfish ||
+                 enemy instanceof GreenJellyfish) &&
+                !enemy.isDead &&
+                bubble.isColliding(enemy)
+            ) {
+                this.throwableObject.splice(bubbleIndex, 1);
+                enemy.die();
+            }
+        });
+
+        if (bubble.isPoisonBubble && this.level.endboss) {
+            if (bubble.isColliding(this.level.endboss)) {
+                this.level.endboss.hit();
+                this.throwableObject.splice(bubbleIndex, 1);
+            }
         }
-      });
     });
-  }
+}
+
   
   checkEndbossIntro() {
-    if (
-        this.character.x >= 3300 &&
-        this.level.endboss &&
-        !this.level.endboss.hasEntered
-    ) {
+    if (this.character.x >= 3300 && this.level.endboss && !this.level.endboss.hasEntered) {
         this.level.endboss.startIntro();
     }
 }
