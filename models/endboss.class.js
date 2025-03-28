@@ -19,7 +19,7 @@ class Endboss extends MovableObject {
     "img/2.Enemy/3 Final Enemy/2.floating/8.png",
     "img/2.Enemy/3 Final Enemy/2.floating/9.png",
     "img/2.Enemy/3 Final Enemy/2.floating/10.png",
-    "img/2.Enemy/3 Final Enemy/2.floating/11.png"
+    "img/2.Enemy/3 Final Enemy/2.floating/11.png",
   ];
 
   IMAGES_INTRO = [
@@ -32,7 +32,7 @@ class Endboss extends MovableObject {
     "img/2.Enemy/3 Final Enemy/1.Introduce/7.png",
     "img/2.Enemy/3 Final Enemy/1.Introduce/8.png",
     "img/2.Enemy/3 Final Enemy/1.Introduce/9.png",
-    "img/2.Enemy/3 Final Enemy/1.Introduce/10.png"
+    "img/2.Enemy/3 Final Enemy/1.Introduce/10.png",
   ];
 
   IMAGES_ATTACK = [
@@ -41,14 +41,14 @@ class Endboss extends MovableObject {
     "img/2.Enemy/3 Final Enemy/Attack/3.png",
     "img/2.Enemy/3 Final Enemy/Attack/4.png",
     "img/2.Enemy/3 Final Enemy/Attack/5.png",
-    "img/2.Enemy/3 Final Enemy/Attack/6.png"
+    "img/2.Enemy/3 Final Enemy/Attack/6.png",
   ];
 
   IMAGES_HURT = [
     "img/2.Enemy/3 Final Enemy/Hurt/1.png",
     "img/2.Enemy/3 Final Enemy/Hurt/2.png",
     "img/2.Enemy/3 Final Enemy/Hurt/3.png",
-    "img/2.Enemy/3 Final Enemy/Hurt/4.png"
+    "img/2.Enemy/3 Final Enemy/Hurt/4.png",
   ];
 
   IMAGES_DEAD = [
@@ -57,7 +57,7 @@ class Endboss extends MovableObject {
     "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 8.png",
     "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png",
     "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png",
-    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2.png "
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2.png ",
   ];
 
   constructor() {
@@ -94,7 +94,7 @@ class Endboss extends MovableObject {
 
   animate() {
     this.animationInterval = setInterval(() => {
-      if (this.hasDied) return;
+      if (this.hasDied) return; 
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
@@ -156,20 +156,26 @@ class Endboss extends MovableObject {
   die() {
     if (this.hasDied) return;
     this.speed = 0;
-    this.isDead = true;
     this.hasDied = true;
+
     if (this.attackInterval) clearInterval(this.attackInterval);
     if (this.movementInterval) clearInterval(this.movementInterval);
     if (this.animationInterval) clearInterval(this.animationInterval);
-    let i = 0;
+
+    this.playDeadOnce();
+  }
+
+  playDeadOnce() {
+    clearInterval(this.animationInterval);
     let frames = this.IMAGES_DEAD;
+    let i = 0;
     let deathInterval = setInterval(() => {
       this.img = this.imageCache[frames[i]];
       i++;
       if (i >= frames.length) {
         clearInterval(deathInterval);
-        this.img = this.imageCache[frames[frames.length - 1]];
+        this.img = this.imageCache[frames[frames.length - 2]];
       }
-    }, 200);
+    }, 150);
   }
 }
