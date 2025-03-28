@@ -173,7 +173,6 @@ class World {
       if (!this.character.isDead()) {
         for (let enemy of this.level.enemies) {
           let isStandardBubble = !bubble.isPoisonBubble;
-  
           if (
             isStandardBubble &&
             (enemy instanceof PurpleJellyfish ||
@@ -185,9 +184,8 @@ class World {
           ) {
             this.throwableObject.splice(i, 1);
             enemy.die();
-            break; 
+            break;
           }
-  
           if (
             bubble.isPoisonBubble &&
             this.level.endboss &&
@@ -196,13 +194,12 @@ class World {
           ) {
             this.level.endboss.hit();
             this.throwableObject.splice(i, 1);
-            break; 
+            break;
           }
         }
       }
     }
   }
-  
 
   checkEndbossIntro() {
     if (!this.character.isDead() && this.character.x >= 3300 && this.level.endboss && !this.level.endboss.hasEntered) {
@@ -257,7 +254,6 @@ class World {
         this.flipImage(mo);
       }
       mo.draw(this.ctx);
-      mo.drawFrame(this.ctx);
       if (mo.otherDirection) {
         this.flipImageBack(mo);
       }
