@@ -111,16 +111,19 @@ class World {
 
   checkCoinCollection() {
     this.level.coins.forEach((coin, index) => {
-      if (!this.character.isDead() && this.character.isColliding(coin)) {
-        this.level.coins.splice(index, 1);
-        this.coinStatusBar.percentage += 20;
-        if (this.coinStatusBar.percentage > 100) {
-          this.coinStatusBar.percentage = 100;
+        if (!this.character.isDead() && this.character.isColliding(coin)) {
+            this.level.coins.splice(index, 1);
+            this.coinStatusBar.percentage += 20;
+            if (this.coinStatusBar.percentage > 100) {
+                this.coinStatusBar.percentage = 100;
+            }
+            this.coinStatusBar.setPercentage(this.coinStatusBar.percentage);
+
+            this.soundManager.playCoinSound();
         }
-        this.coinStatusBar.setPercentage(this.coinStatusBar.percentage);
-      }
     });
-  }
+}
+
 
   checkPoisonCollection() {
     this.level.poisons.forEach((poison, index) => {

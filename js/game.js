@@ -10,30 +10,33 @@ function init() {
 }
 
 function startGame() {
-  document.getElementById("startScreen").classList.add("d-none");
-  document.getElementById("gameScreen").classList.remove("d-none");
+    document.getElementById("startScreen").classList.add("d-none");
+    document.getElementById("gameScreen").classList.remove("d-none");
 
-  canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard, soundManager);
+    canvas = document.getElementById("canvas");
+    world = new World(canvas, keyboard, soundManager);
 
-  if (isMuted) {
-    toggleSound();
-  }
+    if (isMuted) {
+        isMuted = false; 
+        soundManager.isMuted = false; 
+        soundManager.playBackgroundMusic(); 
+        document.getElementById('volumeIcon').src = "img/volume-high-solid.svg"; 
+    }
 }
+
 
 function toggleSound() {
-  let volumeIcon = document.getElementById("volumeIcon");
+    let volumeIcon = document.getElementById('volumeIcon');
 
-  if (isMuted) {
-    soundManager.playBackgroundMusic();
-    volumeIcon.src = "img/volume-high-solid.svg";
-    isMuted = false;
-  } else {
-    soundManager.stopBackgroundMusic();
-    volumeIcon.src = "img/volume-xmark-solid.svg";
-    isMuted = true;
-  }
+    soundManager.toggleMute(); 
+
+    if (soundManager.isMuted) {
+        volumeIcon.src = "img/volume-xmark-solid.svg"; 
+    } else {
+        volumeIcon.src = "img/volume-high-solid.svg"; 
+    }
 }
+
 
 soundManager.stopBackgroundMusic();
 
