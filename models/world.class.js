@@ -11,14 +11,16 @@ class World {
   throwableObject = [];
   poisonShotsUsed = 0;
 
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, soundManager) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.soundManager = soundManager; 
     this.draw();
     this.setWorld();
     this.run();
-  }
+    this.soundManager.playBackgroundMusic(); 
+}
 
   setWorld() {
     this.character.world = this;
