@@ -40,74 +40,86 @@ class World {
       this.checkBubbleHits();
       this.checkEndbossIntro();
       this.checkBubbleTimeout();
+      this.checkGameOver(); 
+      this.checkGameWin(); 
     }, 200);
   }
 
   checkThrowObjects() {
     if (
-      !this.character.isDead() &&
-      this.keyboard.D &&
-      !this.character.isThrowing &&
-      !this.character.isHurt() &&
-      !this.character.otherDirection
+        !this.character.isDead() &&
+        this.keyboard.D &&
+        !this.character.isThrowing &&
+        !this.character.isHurt() &&
+        !this.character.otherDirection
     ) {
-      this.character.throwAnimation();
-      setTimeout(() => {
-        let bubble = new ThrowableObject(
-          this.character.x + 200,
-          this.character.y + 150,
-          false,
-          false
-        );
-        this.throwableObject.push(bubble);
-      }, 400);
-    }
-    if (
-      !this.character.isDead() &&
-      this.keyboard.F &&
-      !this.character.isThrowingSpecial &&
-      !this.character.isHurt() &&
-      !this.character.otherDirection &&
-      this.poisonStatusBar.percentage >= 20
-    ) {
-      this.character.throwPoisonBubbleAnimation();
-      setTimeout(() => {
-        let poisonBubble = new ThrowableObject(
-          this.character.x + 200,
-          this.character.y + 150,
-          false,
-          true
-        );
-        this.throwableObject.push(poisonBubble);
-        this.poisonShotsUsed++;
-        if (this.poisonShotsUsed >= 2) {
-          this.poisonShotsUsed = 0;
-          this.poisonStatusBar.percentage -= 20;
-          if (this.poisonStatusBar.percentage < 0) {
-            this.poisonStatusBar.percentage = 0;
-          }
-          this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
-        }
-      }, 400);
-    }
-  }
+        this.character.throwAnimation();
 
-  checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (!this.character.isDead() && !this.character.isSlapping && !enemy.isDead) {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit(enemy);
-          this.statusBar.setPercentage(this.character.energy);
-        }
-      }
-    });
-    if (!this.character.isDead() && this.level.endboss && !this.level.endboss.isDead()) {
-      if (this.character.isColliding(this.level.endboss)) {
-        this.character.hit(this.level.endboss);
+        setTimeout(() => {
+            let bubble = new ThrowableObject(
+                this.character.x + 200,
+                this.character.y + 150,
+                false,
+                false
+            );
+            this.throwableObject.push(bubble);
+            this.soundManager.playBubbleShootSound(); 
+        }, 400);
+    }
+
+    if (
+        !this.character.isDead() &&
+        this.keyboard.F &&
+        !this.character.isThrowingSpecial &&
+        !this.character.isHurt() &&
+        !this.character.otherDirection &&
+        this.poisonStatusBar.percentage >= 20
+    ) {
+        this.character.throwPoisonBubbleAnimation();
+
+        setTimeout(() => {
+            let poisonBubble = new ThrowableObject(
+                this.character.x + 200,
+                this.character.y + 150,
+                false,
+                true
+            );
+            this.throwableObject.push(poisonBubble);
+            this.soundManager.playBubbleShootSound(); 
+
+            this.poisonShotsUsed++;
+            if (this.poisonShotsUsed >= 2) {
+                this.poisonShotsUsed = 0;
+                this.poisonStatusBar.percentage -= 20;
+                if (this.poisonStatusBar.percentage < 0) {
+                    this.poisonStatusBar.percentage = 0;
+                }
+                this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+            }
+        }, 400);
+    }
+}
+
+
+checkCollisions() {
+  this.level.enemies.forEach((enemy) => {
+    if (!this.character.isDead() && !this.character.isSlapping && !enemy.isDead) {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit(enemy);
         this.statusBar.setPercentage(this.character.energy);
+        this.soundManager.playDamageSound(); 
       }
     }
+  }); 
+  if (!this.character.isDead() && this.level.endboss && !this.level.endboss.isDead()) {
+    if (this.character.isColliding(this.level.endboss)) {
+      this.character.hit(this.level.endboss);
+      this.statusBar.setPercentage(this.character.energy);
+      this.soundManager.playDamageSound(); 
+    }
   }
+}
+
 
   checkCoinCollection() {
     this.level.coins.forEach((coin, index) => {
@@ -134,6 +146,7 @@ class World {
           this.poisonStatusBar.percentage = 100;
         }
         this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+        this.soundManager.playPoisonCollectSound();
       }
     });
   }
@@ -147,6 +160,7 @@ class World {
           this.poisonStatusBar.percentage = 100;
         }
         this.poisonStatusBar.setPercentage(this.poisonStatusBar.percentage);
+        this.soundManager.playPoisonCollectSound();
       }
     });
   }
@@ -160,6 +174,8 @@ class World {
       !this.character.isHurt()
     ) {
       this.character.finSlapAnimation();
+      this.soundManager.playFinSlapSound(); 
+  
       this.level.enemies.forEach((enemy) => {
         if (
           enemy instanceof Pufferfish &&
@@ -171,6 +187,7 @@ class World {
       });
     }
   }
+  
 
   checkBubbleHits() {
     for (let i = this.throwableObject.length - 1; i >= 0; i--) {
@@ -199,6 +216,7 @@ class World {
           ) {
             this.level.endboss.hit();
             this.throwableObject.splice(i, 1);
+            this.soundManager.playEndbossHurtSound();
             break;
           }
         }
@@ -207,10 +225,19 @@ class World {
   }
 
   checkEndbossIntro() {
-    if (!this.character.isDead() && this.character.x >= 3300 && this.level.endboss && !this.level.endboss.hasEntered) {
+    if (
+      !this.character.isDead() &&
+      this.character.x >= 3300 &&
+      this.level.endboss &&
+      !this.level.endboss.hasEntered
+    ) {
+      this.level.endboss.hasEntered = true;
       this.level.endboss.startIntro();
+  
+      this.soundManager.playEndbossMusic(); 
     }
   }
+  
 
   checkBubbleTimeout() {
     this.throwableObject.forEach((bubble, i) => {
@@ -275,5 +302,32 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  checkGameOver() {
+    if (this.character.isDead() && !this.gameOverTriggered) {
+      this.gameOverTriggered = true;
+      this.soundManager.playGameOverSound(); 
+  
+      setTimeout(() => {
+        document.getElementById('gameScreen').classList.add('d-none');
+        document.getElementById('gameOverScreen').classList.remove('d-none');
+      }, 3000); 
+    }
+  }  
+
+  checkGameWin() {
+    if (this.level.endboss && this.level.endboss.isDead() && !this.winTriggered) {
+      this.winTriggered = true;
+  
+      this.soundManager.stopEndbossMusic();     
+      this.soundManager.playWinSound();         
+      this.soundManager.playBackgroundMusic(); 
+  
+      setTimeout(() => {
+        document.getElementById('gameScreen').classList.add('d-none');
+        document.getElementById('winScreen').classList.remove('d-none');
+      }, 3000);
+    }
   }
 }
