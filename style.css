@@ -105,7 +105,7 @@ canvas {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     position: absolute;
     right: 250px;
-    top: 120px;
+    top: 100px;
   }
   
   .home-btn span {
@@ -117,12 +117,6 @@ canvas {
     transform: scale(1.1);
   }
   
-  .home-btn:active {
-    transform: scale(0.95);
-  }
-  
-
-
 .icon-container {
     position: absolute;
     top: 20px; 
@@ -177,3 +171,31 @@ canvas {
     transform: scale(1.05);
   }
   
+  .gameover-screen {
+    background-image: url("img/3. Background/Layers/5. Water/D1.png");
+    background-size: cover;
+    background-position: center;
+    width: 720px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.gameover-content {
+    text-align: center;
+}
+
+.gameover-title {
+    max-width: 80%;
+    height: auto;
+}
+
+.gameover-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}

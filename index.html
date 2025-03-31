@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sharkie</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./fonts.css">
-    <script src="./models/drawable-object.class.js"></script>
-    <script src="./models/sound-manager.class.js"></script>
-    <script src="./models/status-bar.class.js"></script>
-    <script src="./models/coin-status-bar.class.js"></script>
-    <script src="./models/poison-status-bar.class.js"></script>
-    <script src="./models/movable-object.class.js"></script>
-    <script src="./models/character.class.js"></script>
-    <script src="./models/pufferfish.class.js"></script>
-    <script src="./models/purple-jellyfish.class.js"></script>
-    <script src="models/green-jellyfish.class.js"></script>
-    <script src="models/yellow-jellyfish.class.js"></script>
-    <script src="models/pink-jellyfish.class.js"></script>
-    <script src="./models/coin.class.js"></script>
-    <script src="./models/poison_ground.class.js"></script>
-    <script src="./models/poison.class.js"></script>
-    <script src="./models/world.class.js"></script>
-    <script src="./models/background-object.class.js"></script>
-    <script src="./models/keyboard.class.js"></script>
-    <script src="./models/level.class.js"></script>
-    <script src="./models/throwable-object.class.js"></script>
-    <script src="./models/endboss.class.js"></script>
-    <script src="./levels/level1.js"></script>
-    <script src="./js/game.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sharkie</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./fonts.css">
+  <script src="./models/drawable-object.class.js"></script>
+  <script src="./models/sound-manager.class.js"></script>
+  <script src="./models/status-bar.class.js"></script>
+  <script src="./models/coin-status-bar.class.js"></script>
+  <script src="./models/poison-status-bar.class.js"></script>
+  <script src="./models/movable-object.class.js"></script>
+  <script src="./models/character.class.js"></script>
+  <script src="./models/pufferfish.class.js"></script>
+  <script src="./models/purple-jellyfish.class.js"></script>
+  <script src="models/green-jellyfish.class.js"></script>
+  <script src="models/yellow-jellyfish.class.js"></script>
+  <script src="models/pink-jellyfish.class.js"></script>
+  <script src="./models/coin.class.js"></script>
+  <script src="./models/poison_ground.class.js"></script>
+  <script src="./models/poison.class.js"></script>
+  <script src="./models/world.class.js"></script>
+  <script src="./models/background-object.class.js"></script>
+  <script src="./models/keyboard.class.js"></script>
+  <script src="./models/level.class.js"></script>
+  <script src="./models/throwable-object.class.js"></script>
+  <script src="./models/endboss.class.js"></script>
+  <script src="./levels/level1.js"></script>
+  <script src="./js/game.js"></script>
 </head>
 <body>
-    <main class="content-wrapper">
+  <main class="content-wrapper">
     <div class="icon-container">
-        <img id="volumeIcon" class="icon-btn" src="img/volume-xmark-solid.svg" alt="Sound aus" onclick="toggleSound()">
-       <img class="icon-btn" src="img/circle-info-solid.svg" alt="Info" onclick="showInfo()">
+      <img id="volumeIcon" class="icon-btn" src="img/volume-xmark-solid.svg" alt="Sound aus" onclick="toggleSound()">
+      <img class="icon-btn" src="img/circle-info-solid.svg" alt="Info" onclick="showInfo()">
     </div>
+    <!-- Winscreen -->
     <section class="view-area win-screen d-none" id="winScreen">
-        <div class="win-buttons">
+      <div class="win-buttons">
+        <div class="home-btn" onclick="openStartScreen()">
+          <span>MENU</span>
+        </div>
+        <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
+      </div>
+    </section>
+    <!-- GameOver-Screen -->
+    <section class="view-area gameover-screen d-none" id="gameOverScreen">
+      <div class="gameover-content">
+        <img class="gameover-title" src="img/6.Botones/Tittles/Game Over/Recurso 12.png" alt="Game Over">
+        <div class="gameover-buttons">
           <div class="home-btn" onclick="openStartScreen()">
             <span>MENU</span>
           </div>
-            <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
+          <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
         </div>
-      </section>
-      
-      <section class="view-area start-screen" id="startScreen">
-        <img class="start-btn" src="img/6.Botones/Start/2.png" alt="Spiel starten" onclick="startGame()">
-      </section>
-      <section class="view-area game-screen d-none" id="gameScreen">
-        <canvas id="canvas" width="720" height="480"></canvas>
-      </section>
-  
-    </main>
-  </body>
-  
+      </div>
+    </section>
+    <!-- Startscreen -->
+    <section class="view-area start-screen" id="startScreen">
+      <img class="start-btn" src="img/6.Botones/Start/2.png" alt="Spiel starten" onclick="startGame()">
+    </section>
+    <!-- Gamescreen -->
+    <section class="view-area game-screen d-none" id="gameScreen">
+      <canvas id="canvas" width="720" height="480"></canvas>
+    </section>
+  </main>
+</body>
 </html>
