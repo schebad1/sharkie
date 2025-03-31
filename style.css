@@ -14,7 +14,7 @@ body {
 }
 
 canvas {
-    background-color: black;
+    background-color: rgb(67,169,207);
 }
 
 .content-wrapper {
@@ -71,6 +71,24 @@ canvas {
     transform: scale(0.95); 
 }
 
+.try-again-btn {
+    width: 200px; 
+    height: auto; 
+    cursor: pointer; 
+    transition: transform 0.2s ease; 
+    position: absolute;
+    bottom: 70px;
+    right: 250px;
+}
+
+.try-again-btn:hover {
+    transform: scale(1.1); 
+}
+
+.try-again-btn:active {
+    transform: scale(0.95); 
+}
+
 .icon-container {
     position: absolute;
     top: 20px; 
@@ -90,3 +108,38 @@ canvas {
 .icon-btn:hover {
     transform: scale(1.1); 
 }
+
+.win-screen {
+    background-image: url("img/6.Botones/Tittles/You win/Mesa de trabajo 1.png");
+    background-size: cover;
+    background-position: center;
+    width: 720px;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+  }
+  
+  .win-buttons {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .win-buttons button {
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffffcc;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  
+  .win-buttons button:hover {
+    background-color: white;
+    transform: scale(1.05);
+  }
+  

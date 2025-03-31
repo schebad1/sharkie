@@ -16,7 +16,7 @@ class SoundManager {
         this.backgroundMusic.pause();
         this.backgroundMusic.currentTime = 0;
         this.endbossIntroMusic.loop = true;
-        this.isMuted = false;
+        this.isMuted = true;
     }
 
     playBackgroundMusic() {
@@ -53,7 +53,6 @@ class SoundManager {
 
     toggleMute() {
         this.isMuted = !this.isMuted;
-
         if (this.isMuted) {
             this.stopBackgroundMusic();
         } else {
@@ -107,5 +106,5 @@ class SoundManager {
     stopEndbossMusic() {
         this.endbossIntroMusic.pause();
         this.endbossIntroMusic.currentTime = 0;
-    }    
+    }
 }
