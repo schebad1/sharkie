@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharkie</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./fonts.css">
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/sound-manager.class.js"></script>
     <script src="./models/status-bar.class.js"></script>
@@ -37,6 +38,9 @@
     </div>
     <section class="view-area win-screen d-none" id="winScreen">
         <div class="win-buttons">
+          <div class="home-btn" onclick="openStartScreen()">
+            <span>MENU</span>
+          </div>
             <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
         </div>
       </section>

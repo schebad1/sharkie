@@ -39,6 +39,14 @@ function toggleSound() {
   }
 }
 
+function openStartScreen() {
+  document.getElementById("gameScreen")?.classList.add("d-none");
+  document.getElementById("winScreen")?.classList.add("d-none");
+  document.getElementById("gameOverScreen")?.classList.add("d-none");
+  document.getElementById("startScreen")?.classList.remove("d-none");
+}
+
+
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {
     keyboard.RIGHT = true;

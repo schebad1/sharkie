@@ -11,6 +11,7 @@ body {
     background: url("img/3. Background/Dark/2.png") no-repeat center center/cover;
     height: 100vh;
     overflow: hidden;
+    font-family: 'Luckiest Guy';
 }
 
 canvas {
@@ -88,6 +89,39 @@ canvas {
 .try-again-btn:active {
     transform: scale(0.95); 
 }
+
+.home-btn {
+    width: 200px;
+    height: 45px;
+    padding: 10px 0;            
+    background-color: #72FFE2;  
+    border: 2px solid #FFFFFF;  
+    border-radius: 13px;        
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    right: 250px;
+    top: 120px;
+  }
+  
+  .home-btn span {
+    font-size: 24px;    
+    color: #4B0082;    
+  }
+  
+  .home-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .home-btn:active {
+    transform: scale(0.95);
+  }
+  
+
 
 .icon-container {
     position: absolute;
