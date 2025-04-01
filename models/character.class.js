@@ -132,7 +132,19 @@ class Character extends MovableObject {
       this.startMovementInterval();
       this.startAnimationInterval();
     }
-  
+    
+    hit(fromEnemy) {
+      super.hit(fromEnemy);
+      if (this.isSleeping) {
+        if (this.sleepInterval) {
+          clearInterval(this.sleepInterval);
+        }
+        this.isSleeping = false;
+        this.idleTime = 0;
+        this.startAnimationInterval();
+      }
+    }
+    
     startMovementInterval() {
       const bossBlockX = 3375;
       this.movementInterval = setInterval(() => {
@@ -187,7 +199,7 @@ class Character extends MovableObject {
         }
       }, 1000 / 60);
     }
-  
+    
     startAnimationInterval() {
       this.animationInterval = setInterval(() => {
         if (this.isDead() && !this.alreadyDead) {
@@ -218,7 +230,7 @@ class Character extends MovableObject {
         }
       }, 120);
     }
-  
+    
     playDeadOnce() {
       clearInterval(this.animationInterval);
       let frames = this.IMAGES_DEAD;
@@ -232,7 +244,7 @@ class Character extends MovableObject {
         }
       }, 150);
     }
-  
+    
     sleepOnce() {
       clearInterval(this.animationInterval);
       let frames = this.IMAGES_SLEEPING;
@@ -266,13 +278,13 @@ class Character extends MovableObject {
         }
       }, 200);
     }
-  
+    
     unfreezeCharacter() {
       this.isSleeping = false;
       this.idleTime = 0;
       this.startAnimationInterval();
     }
-  
+    
     throwAnimation() {
       if (this.isDead()) return;
       this.isThrowing = true;
@@ -282,7 +294,7 @@ class Character extends MovableObject {
         this.idleTime = 0;
       }, 500);
     }
-  
+    
     finSlapAnimation() {
       if (this.isDead()) return;
       this.isSlapping = true;
@@ -291,7 +303,7 @@ class Character extends MovableObject {
         this.isSlapping = false;
       }, 500);
     }
-  
+    
     throwPoisonBubbleAnimation() {
       if (this.isDead()) return;
       this.isThrowingSpecial = true;
@@ -301,7 +313,7 @@ class Character extends MovableObject {
         this.idleTime = 0;
       }, 500);
     }
-  
+    
     stopIntervals() {
       if (this.movementInterval) {
         clearInterval(this.movementInterval);

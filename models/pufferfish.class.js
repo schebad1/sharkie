@@ -29,7 +29,7 @@ class Pufferfish extends MovableObject {
       left: 10
     };
     
-    this.x = 600 + Math.random() * 1800;
+    this.x = 550 + Math.random() * 1000;
 
     let minY = 0;
     let maxY = 380;

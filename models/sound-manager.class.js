@@ -55,10 +55,11 @@ class SoundManager {
         this.isMuted = !this.isMuted;
         if (this.isMuted) {
             this.stopBackgroundMusic();
+            this.stopEndbossMusic();
         } else {
             this.playBackgroundMusic();
         }
-    }
+    }    
 
     playFinSlapSound() {
         if (!this.isMuted) {
