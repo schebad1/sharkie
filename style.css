@@ -16,8 +16,15 @@ body {
 }
 
 canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    max-width: 720px;
+    max-height: 480px;
+    display: block;
     background-color: rgb(67,169,207);
 }
+
 
 .content-wrapper {
     max-width: 1920px;
@@ -31,8 +38,12 @@ canvas {
 }
 
 .view-area {
-    width: 720px;
-    height: 480px;
+    width: 100vw;
+    height: 100vh;
+    max-width: 720px;
+    max-height: 480px;
+    aspect-ratio: 3 / 2;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,6 +52,7 @@ canvas {
     background-repeat: no-repeat;
     position: relative;
 }
+
 
 .start-screen {
     background-image: url("img/3. Background/Mesa de trabajo 1.png");
@@ -311,4 +323,73 @@ canvas {
 .poisoned-bubble {
     width: 70px;
     height: 70px;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+}
+
+@media (max-width: 1000px) {
+    .bubble-construction img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .swim-construction {
+        margin-top: 20px;
+    }
+
+    .arrow-keys {
+        width: 130px;
+        height: 60px;
+    }
+
+    .swim {
+        height: 110px;
+    }
+
+    .fin-slap {
+        height: 110px;
+    }
+
+    .key-f {
+        width: 60px;
+        height: 60px;
+        background-color: #72FFE2;
+        border: 3px solid #FFFFFF;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        color: #4B0082;
+        margin-left: 40px;
+    }
+}
+
+@media (max-width: 850px) {
+    .icon-container {
+        top: 10px;
+        right: 75px;
+        z-index: 1000;
+    }
+
+    .icon-btn {
+        width: 30px;
+    }
+}
+
+@media (max-width: 680px) {
+    .icon-container {
+        top: 15px;
+        right: 5px;
+    }
 }
