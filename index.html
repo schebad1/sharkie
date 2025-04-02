@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sharkie</title>
+  <!-- CSS-Dateien -->
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./fonts.css">
+
+  <!-- Deine Scripts -->
   <script src="./models/drawable-object.class.js"></script>
   <script src="./models/sound-manager.class.js"></script>
   <script src="./models/status-bar.class.js"></script>
@@ -36,6 +39,7 @@
       <img id="volumeIcon" class="icon-btn" src="img/volume-xmark-solid.svg" alt="Sound aus" onclick="toggleSound()">
       <img class="icon-btn" src="img/circle-info-solid.svg" alt="Info" onclick="showInfo()">
     </div>
+
     <section class="view-area win-screen d-none" id="winScreen">
       <div class="win-buttons">
         <div class="home-btn" onclick="openStartScreen()">
@@ -44,6 +48,7 @@
         <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
       </div>
     </section>
+
     <section class="view-area gameover-screen d-none" id="gameOverScreen">
       <div class="gameover-content">
         <img class="gameover-title" src="img/6.Botones/Tittles/Game Over/Recurso 12.png" alt="Game Over">
@@ -55,11 +60,22 @@
         </div>
       </div>
     </section>
+
     <section class="view-area start-screen" id="startScreen">
       <img class="start-btn" src="img/6.Botones/Start/2.png" alt="Spiel starten" onclick="startGame()">
     </section>
+
     <section class="view-area game-screen d-none" id="gameScreen">
       <canvas id="canvas" width="720" height="480"></canvas>
+      <div id="touch-controls" class="touch-controls d-none">
+        <button class="touch-btn" onclick="pressKey('LEFT')">◀</button>
+        <button class="touch-btn" onclick="pressKey('RIGHT')">▶</button>
+        <button class="touch-btn" onclick="pressKey('UP')">▲</button>
+        <button class="touch-btn" onclick="pressKey('DOWN')">▼</button>
+        <button class="touch-btn" onclick="pressKey('SPACE')">SLAP</button>
+        <button class="touch-btn" onclick="pressKey('D')">BUBBLE</button>
+        <button class="touch-btn" onclick="pressKey('F')">POISON</button>
+      </div>      
     </section>
     <section class="view-area info-screen d-none" id="infoOverlay">
       <div class="info-content">
@@ -85,8 +101,11 @@
           <span>Kills pufferfish</span>
           <img class="fin-slap" src="img/1.Sharkie/4.Attack/Fin slap/5.png" alt="Fin Slap">
         </div>
-        </div>
+      </div>
     </section>
   </main>
+  <div id="rotateWarning" class="rotate-warning d-none">
+    <p>Please rotate your device to landscape mode for a better experience!</p>
+  </div>
 </body>
 </html>
