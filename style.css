@@ -8,7 +8,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Statt halb-transparent -> ganz deckend, falls du 0 Hintergrund sehen willst: */
     background: url("img/3. Background/Dark/2.png") no-repeat center center/cover;
     height: 100vh;
     overflow: hidden;
@@ -17,13 +16,11 @@ body {
 }
 
 canvas {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    max-width: 720px;
-    max-height: 480px;
+    width: 720px;   
+    height: 480px;  
     display: block;
     background-color: rgb(67,169,207);
+    margin: 0 auto; 
 }
 
 .content-wrapper {
@@ -53,7 +50,6 @@ canvas {
     position: relative;
 }
 
-/* START-SCREEN HINTERGRUND */
 .start-screen {
     background-image: url("img/3. Background/Mesa de trabajo 1.png");
 }
@@ -61,14 +57,12 @@ canvas {
 .game-screen {
     flex-direction: column;
     background-color: black;
-    position: relative;
 }
 
 .d-none {
     display: none !important;
 }
 
-/* START-BUTTON */
 .start-btn {
     width: 200px; 
     height: auto; 
@@ -82,11 +76,11 @@ canvas {
 .start-btn:hover {
     transform: scale(1.1); 
 }
+
 .start-btn:active {
     transform: scale(0.95); 
 }
 
-/* TRY-AGAIN-BUTTON */
 .try-again-btn {
     width: 200px; 
     height: auto; 
@@ -96,14 +90,15 @@ canvas {
     bottom: 70px;
     right: 250px;
 }
+
 .try-again-btn:hover {
     transform: scale(1.1); 
 }
+
 .try-again-btn:active {
     transform: scale(0.95); 
 }
 
-/* HOME-BUTTON */
 .home-btn {
     width: 200px;
     height: 45px;
@@ -121,15 +116,16 @@ canvas {
     right: 250px;
     top: 100px;
 }
+  
 .home-btn span {
     font-size: 24px;    
     color: #4B0082;    
 }
+  
 .home-btn:hover {
     transform: scale(1.1);
 }
-
-/* ICONS CONTAINER (LAUTSTÄRKE + INFO) */
+  
 .icon-container {
     position: absolute;
     top: 20px; 
@@ -138,17 +134,18 @@ canvas {
     flex-direction: column; 
     gap: 10px; 
 }
+  
 .icon-btn {
     width: 40px; 
     height: auto; 
     cursor: pointer; 
     transition: transform 0.2s ease; 
 }
+  
 .icon-btn:hover {
     transform: scale(1.1); 
 }
-
-/* WIN-SCREEN */
+  
 .win-screen {
     background-image: url("img/6.Botones/Tittles/You win/Mesa de trabajo 1.png");
     background-size: cover;
@@ -162,10 +159,12 @@ canvas {
     gap: 20px;
     position: relative;
 }
+  
 .win-buttons {
     display: flex;
     gap: 20px;
 }
+  
 .win-buttons button {
     padding: 12px 24px;
     font-size: 18px;
@@ -175,12 +174,12 @@ canvas {
     cursor: pointer;
     transition: 0.2s ease;
 }
+  
 .win-buttons button:hover {
     background-color: white;
     transform: scale(1.05);
 }
-
-/* GAMEOVER-SCREEN */
+  
 .gameover-screen {
     background-image: url("img/3. Background/Layers/5. Water/D1.png");
     background-size: cover;
@@ -194,20 +193,22 @@ canvas {
     gap: 20px;
     position: relative;
 }
+  
 .gameover-content {
     text-align: center;
 }
+  
 .gameover-title {
     max-width: 80%;
     height: auto;
 }
+  
 .gameover-buttons {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-/* INFO-SCREEN */
 .info-screen {
     background-image: url("img/3. Background/Layers/5. Water/D1.png");
     background-size: cover;
@@ -225,6 +226,7 @@ canvas {
     transform: translate(-50%, -50%);
     z-index: 999; 
 }
+
 .info-content {
     display: flex;
     flex-direction: column;
@@ -236,41 +238,66 @@ canvas {
     padding-top: 40px;
 }
 
-/* BUBBLE-CONSTRUCTION ETC. */
-.bubble-construction,
-.poisoned-bubble-construction,
-.swim-construction,
-.attack-construction {
+.bubble-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+
+.bubble-construction img {
+    width: 70px;
+    height: 70px;
+}
+
+.swim-construction {
     display: flex;
     justify-content: space-between;
     width: 100%;
     align-items: center;
     margin-top: 30px;
 }
-.bubble-construction img,
-.poisoned-bubble,
-.swim,
-.fin-slap,
-.arrow-keys {
-    width: 70px;
-    height: 70px;
-}
 
-/* Minimale Abweichungen für einzelne Bilder */
 .arrow-keys {
     width: 150px;
     height: 75px;
 }
+
 .swim {
     width: 150px;
     height: 125px;
 }
+
+.attack-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.space-key {
+    width: 150px;
+    height: 50px;
+}
+
 .fin-slap {
     width: 150px;
     height: 150px;
 }
 
-/* KEY-F-STYLE */
+.poisoned-bubble-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.key {
+    margin-left: 40px;
+}
+
 .key-f {
     width: 70px;
     height: 70px;
@@ -284,24 +311,49 @@ canvas {
     color: #4B0082;           
     margin-left: 40px;
 }
+
 .key-f span {
     margin-top: 10px;
 }
 
-/* TOUCH-CONTROLS */
-.touch-controls {
+.poisoned-bubble {
+    width: 70px;
+    height: 70px;
+}
+
+.rotate-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: #fff;
+    font-size: 24px;
+    font-family: 'Luckiest Guy', sans-serif; 
+    text-align: center;
+    padding: 20px;
+  }
+  
+
+  .touch-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;         
-    flex-direction: row;   
-    gap: 10px;
-}
-.touch-btn {
+  }
+  
+  .touch-btn {
     font-family: 'Luckiest Guy', sans-serif;
-    padding: 8px 16px;    
-    font-size: 16px; 
+    padding: 10px 16px;
+    font-size: 16px;
     border: none;
     border-radius: 10px;
     background-color: #72FFE2;
@@ -310,72 +362,78 @@ canvas {
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     transition: transform 0.1s ease;
-}
-.touch-btn:active {
+  }
+  
+  .touch-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .touch-btn:active {
     transform: scale(0.95);
-}
-
-/* HOCHFORMAT-WARNING-OVERLAY */
-.rotate-warning {
-    position: fixed;      /* immer über allem, unabhängig vom restlichen Layout */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* Voll deckend, damit man das Spiel NICHT mehr sieht */
-    background-color: black; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;  /* sehr weit vorne, damit nichts darüber liegt */
-    text-align: center;
-    color: #fff;    /* weiße Schrift */
-    font-size: 24px; 
-    font-family: 'Luckiest Guy', sans-serif; 
-    padding: 20px;  
-}
-
-/* RESPONSIVE STYLES */
-/* Canvas skalieren */
+  }
+  
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
     }
 }
+
 @media only screen and (max-height: 480px) {
     canvas {
         height: 100vh;
     }
 }
 
-/* Anpassungen bei kleineren Viewports */
 @media (max-width: 1000px) {
+    .bubble-construction img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .swim-construction {
+        margin-top: 20px;
+    }
+
     .arrow-keys {
         width: 130px;
         height: 60px;
     }
+
     .swim {
         height: 110px;
     }
+
     .fin-slap {
         height: 110px;
     }
+
     .key-f {
         width: 60px;
         height: 60px;
+        background-color: #72FFE2;
+        border: 3px solid #FFFFFF;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 36px;
+        color: #4B0082;
+        margin-left: 40px;
     }
 }
+
 @media (max-width: 850px) {
     .icon-container {
         top: 10px;
         right: 75px;
         z-index: 1000;
     }
+
     .icon-btn {
         width: 30px;
     }
 }
+
 @media (max-width: 680px) {
     .icon-container {
         top: 15px;

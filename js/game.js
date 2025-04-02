@@ -18,6 +18,7 @@ function startGame() {
     world.stopGame();
     world = null;
   }
+
   if (soundManager.isMuted) {
     soundManager.toggleMute(); 
   }
@@ -28,8 +29,8 @@ function startGame() {
 
 function toggleSound() {
   let volumeIcon = document.getElementById("volumeIcon");
-
   soundManager.toggleMute();
+
   if (soundManager.isMuted) {
     volumeIcon.src = "img/volume-xmark-solid.svg";
   } else {
@@ -87,9 +88,9 @@ function pressKey(keyName) {
 }
 
 function showTouchControlsIfMobileLandscape() {
-  const isMobile = window.innerWidth <= 900;
+  const isMobile = window.innerWidth <= 1200;
   const isLandscape = window.innerWidth > window.innerHeight;
-  
+
   const controls = document.getElementById("touch-controls");
   if (isMobile && isLandscape) {
     controls.classList.remove("d-none");
@@ -98,37 +99,35 @@ function showTouchControlsIfMobileLandscape() {
   }
 }
 
-function isMobileOrTablet() {
-  let mobileRegex = /Android|iPhone|iPod|Windows Phone|webOS|BlackBerry/i;
-  if (mobileRegex.test(navigator.userAgent)) {
-    return true;
-  }
-  if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) {
-    return true;
-  }
-  return false;
-}
-
 function checkOrientationWarning() {
-  const isMobile = isMobileOrTablet();
+  const maxDim = Math.max(window.innerWidth, window.innerHeight);
+  const isSmallDevice = maxDim <= 1400; 
+  
   const isPortrait = window.innerHeight > window.innerWidth;
-  
-  const rotateWarning = document.getElementById('rotateWarning');
-  
-  if (isMobile && isPortrait) {
-    rotateWarning.classList.remove('d-none'); 
-  } else {
-    rotateWarning.classList.add('d-none');    
-  }
-}
 
-function handleResizeOrientation() {
-  checkOrientationWarning();
-  showTouchControlsIfMobileLandscape();
+  const rotateWarning = document.getElementById('rotateWarning');
+  const contentWrapper = document.querySelector('.content-wrapper');
+
+  if (isSmallDevice && isPortrait) {
+    rotateWarning.classList.remove('d-none');
+    contentWrapper.classList.add('d-none');
+  } else {
+    rotateWarning.classList.add('d-none');
+    contentWrapper.classList.remove('d-none');
+  }
 }
 
 window.addEventListener('load', () => {
-  handleResizeOrientation();
+  showTouchControlsIfMobileLandscape();
+  checkOrientationWarning();
 });
-window.addEventListener('resize', handleResizeOrientation);
-window.addEventListener('orientationchange', handleResizeOrientation);
+
+window.addEventListener('resize', () => {
+  showTouchControlsIfMobileLandscape();
+  checkOrientationWarning();
+});
+
+window.addEventListener('orientationchange', () => {
+  showTouchControlsIfMobileLandscape();
+  checkOrientationWarning();
+});
