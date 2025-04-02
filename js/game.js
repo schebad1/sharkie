@@ -117,6 +117,17 @@ function checkOrientationWarning() {
   }
 }
 
+function showImprint() {
+  document.getElementById('startScreen').classList.add('d-none');
+  document.getElementById('imprintScreen').classList.remove('d-none');
+}
+
+function closeImprint() {
+  document.getElementById('imprintScreen').classList.add('d-none');
+  document.getElementById('startScreen').classList.remove('d-none');
+}
+
+
 window.addEventListener('load', () => {
   showTouchControlsIfMobileLandscape();
   checkOrientationWarning();

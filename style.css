@@ -371,6 +371,55 @@ canvas {
   .touch-btn:active {
     transform: scale(0.95);
   }
+
+  .imprint-span {
+    font-size: 20px;
+    position: absolute;
+    bottom: 20px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .imprint-screen {
+    background-image: url("img/3. Background/Layers/5. Water/D1.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .imprint-content {
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .imprint-buttons .home-btn {
+    background-color: transparent;
+    border: none;
+    box-shadow: none !important;
+    top: 30px !important; 
+    right: 50px !important;
+    width: auto;
+    height: auto;
+    color: #4B0082;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .imprint-buttons .home-btn:hover {
+    transform: scale(1.2);
+  }
+  
   
 @media only screen and (max-width: 720px) {
     canvas {
