@@ -12,12 +12,14 @@ class World {
   poisonShotsUsed = 0;
   gameInterval;      
   animationFrameId;  
+  paused = false;
 
   constructor(canvas, keyboard, soundManager) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.soundManager = soundManager; 
+    this.paused = false;
     this.draw();
     this.setWorld();
     this.run();
@@ -33,6 +35,7 @@ class World {
 
   run() {
     this.gameInterval = setInterval(() => {
+      if (this.paused) return;
       this.checkFinSlap();
       this.checkCollisions();
       this.checkCoinCollection();

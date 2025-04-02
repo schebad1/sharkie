@@ -51,10 +51,18 @@ function showInfo() {
 
   if (infoOverlay.classList.contains("d-none")) {
     infoOverlay.classList.remove("d-none");
+    if (world) {
+      world.paused = true;
+    }
   } else {
     infoOverlay.classList.add("d-none");
+    if (world) {
+      world.paused = false;
+    }
   }
 }
+
+
 
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {

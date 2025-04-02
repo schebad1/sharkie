@@ -79,7 +79,8 @@ hit(fromEnemy) {
 
   moveLeft() {
     setInterval(() => {
+      if (this.world && this.world.paused) return;
       this.x -= this.speed;
     }, 1000 / 60);
-  }
+  }  
 }
