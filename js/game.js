@@ -46,6 +46,15 @@ function openStartScreen() {
   document.getElementById("startScreen")?.classList.remove("d-none");
 }
 
+function showInfo() {
+  const infoOverlay = document.getElementById("infoOverlay");
+
+  if (infoOverlay.classList.contains("d-none")) {
+    infoOverlay.classList.remove("d-none");
+  } else {
+    infoOverlay.classList.add("d-none");
+  }
+}
 
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {

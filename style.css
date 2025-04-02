@@ -12,6 +12,7 @@ body {
     height: 100vh;
     overflow: hidden;
     font-family: 'Luckiest Guy';
+    color: #4B0082;
 }
 
 canvas {
@@ -106,16 +107,16 @@ canvas {
     position: absolute;
     right: 250px;
     top: 100px;
-  }
+}
   
-  .home-btn span {
+.home-btn span {
     font-size: 24px;    
     color: #4B0082;    
-  }
+}
   
-  .home-btn:hover {
+.home-btn:hover {
     transform: scale(1.1);
-  }
+}
   
 .icon-container {
     position: absolute;
@@ -125,18 +126,18 @@ canvas {
     flex-direction: column; 
     gap: 10px; 
 }
-
+  
 .icon-btn {
     width: 40px; 
     height: auto; 
     cursor: pointer; 
     transition: transform 0.2s ease; 
 }
-
+  
 .icon-btn:hover {
     transform: scale(1.1); 
 }
-
+  
 .win-screen {
     background-image: url("img/6.Botones/Tittles/You win/Mesa de trabajo 1.png");
     background-size: cover;
@@ -149,14 +150,14 @@ canvas {
     flex-direction: column;
     gap: 20px;
     position: relative;
-  }
+}
   
-  .win-buttons {
+.win-buttons {
     display: flex;
     gap: 20px;
-  }
+}
   
-  .win-buttons button {
+.win-buttons button {
     padding: 12px 24px;
     font-size: 18px;
     border: none;
@@ -164,14 +165,14 @@ canvas {
     background-color: #ffffffcc;
     cursor: pointer;
     transition: 0.2s ease;
-  }
+}
   
-  .win-buttons button:hover {
+.win-buttons button:hover {
     background-color: white;
     transform: scale(1.05);
-  }
+}
   
-  .gameover-screen {
+.gameover-screen {
     background-image: url("img/3. Background/Layers/5. Water/D1.png");
     background-size: cover;
     background-position: center;
@@ -184,18 +185,130 @@ canvas {
     gap: 20px;
     position: relative;
 }
-
+  
 .gameover-content {
     text-align: center;
 }
-
+  
 .gameover-title {
     max-width: 80%;
     height: auto;
 }
-
+  
 .gameover-buttons {
     display: flex;
     gap: 20px;
     align-items: center;
+}
+
+.info-screen {
+    background-image: url("img/3. Background/Layers/5. Water/D1.png");
+    background-size: cover;
+    background-position: center;
+    width: 720px;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999; 
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 40px;
+}
+
+.bubble-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+
+.bubble-construction img {
+    width: 70px;
+    height: 70px;
+}
+
+.swim-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.arrow-keys {
+    width: 150px;
+    height: 75px;
+}
+
+.swim {
+    width: 150px;
+    height: 125px;
+}
+
+.attack-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.space-key {
+    width: 150px;
+    height: 50px;
+}
+
+.fin-slap {
+    width: 150px;
+    height: 150px;
+}
+
+.poisoned-bubble-construction {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.key {
+    margin-left: 40px;
+}
+
+.key-f {
+    width: 70px;
+    height: 70px;
+    background-color: #72FFE2;  
+    border: 3px solid #FFFFFF; 
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #4B0082;           
+    margin-left: 40px;
+}
+
+.key-f span {
+    margin-top: 10px;
+}
+
+.poisoned-bubble {
+    width: 70px;
+    height: 70px;
 }

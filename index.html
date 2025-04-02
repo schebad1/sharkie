@@ -36,7 +36,6 @@
       <img id="volumeIcon" class="icon-btn" src="img/volume-xmark-solid.svg" alt="Sound aus" onclick="toggleSound()">
       <img class="icon-btn" src="img/circle-info-solid.svg" alt="Info" onclick="showInfo()">
     </div>
-    <!-- Winscreen -->
     <section class="view-area win-screen d-none" id="winScreen">
       <div class="win-buttons">
         <div class="home-btn" onclick="openStartScreen()">
@@ -45,7 +44,6 @@
         <img class="try-again-btn" src="img/6.Botones/Try again/Recurso 17.png" alt="Spiel starten" onclick="startGame()">
       </div>
     </section>
-    <!-- GameOver-Screen -->
     <section class="view-area gameover-screen d-none" id="gameOverScreen">
       <div class="gameover-content">
         <img class="gameover-title" src="img/6.Botones/Tittles/Game Over/Recurso 12.png" alt="Game Over">
@@ -57,13 +55,37 @@
         </div>
       </div>
     </section>
-    <!-- Startscreen -->
     <section class="view-area start-screen" id="startScreen">
       <img class="start-btn" src="img/6.Botones/Start/2.png" alt="Spiel starten" onclick="startGame()">
     </section>
-    <!-- Gamescreen -->
     <section class="view-area game-screen d-none" id="gameScreen">
       <canvas id="canvas" width="720" height="480"></canvas>
+    </section>
+    <section class="view-area info-screen d-none" id="infoOverlay">
+      <div class="info-content">
+        <div class="bubble-construction">
+          <img class="key" src="img/6.Botones/Key/D key.png" alt="D-Key">
+          <span>Kills Jellies</span>
+          <img class="bubble" src="img/1.Sharkie/4.Attack/Bubble trap/Bubble.png" alt="Bubble">
+        </div>
+        <div class="poisoned-bubble-construction">
+          <div class="key-f">
+            <span>F</span>
+          </div>
+          <span>Kills Endboss</span>
+          <img class="poisoned-bubble" src="img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png" alt="Poisoned Bubble">
+        </div>
+        <div class="swim-construction">
+          <img class="arrow-keys" src="img/6.Botones/Key/arrow keys.png" alt="Arrow Keys">
+          <span>move</span>
+          <img class="swim" src="img/1.Sharkie/3.Swim/1.png" alt="Sharkie Swim">
+        </div>
+        <div class="attack-construction">
+          <img class="space-key" src="img/6.Botones/Key/Space Bar key.png" alt="Space Bar Key">
+          <span>Kills pufferfish</span>
+          <img class="fin-slap" src="img/1.Sharkie/4.Attack/Fin slap/5.png" alt="Fin Slap">
+        </div>
+        </div>
     </section>
   </main>
 </body>
