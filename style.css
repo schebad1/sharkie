@@ -4,6 +4,20 @@
     box-sizing: border-box;
 }
 
+button,
+.icon-btn,
+.try-again-btn,
+.start-btn,
+.home-btn,
+.touch-btn,
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+}
+
 body {
     display: flex;
     align-items: center;
@@ -26,7 +40,6 @@ canvas {
 .content-wrapper {
     max-width: 1920px;
     width: 100%;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -137,7 +150,7 @@ canvas {
   
 .icon-btn {
     width: 40px; 
-    height: auto; 
+    height: 40px; 
     cursor: pointer; 
     transition: transform 0.2s ease; 
 }
@@ -491,6 +504,7 @@ canvas {
 
     .icon-btn {
         width: 30px;
+        height: 30px;
     }
 }
 

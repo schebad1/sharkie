@@ -21,6 +21,7 @@ function startGame() {
   if (soundManager.isMuted) {
     soundManager.toggleMute();
   }
+  soundManager.stopEndbossMusic(); 
   document.getElementById("volumeIcon").src = "img/volume-high-solid.svg";
   world = new World(canvas, keyboard, soundManager);
 }
@@ -36,6 +37,9 @@ function toggleSound() {
 }
 
 function openStartScreen() {
+  if(soundManager) {
+    soundManager.stopEndbossMusic();
+  }
   document.getElementById("gameScreen")?.classList.add("d-none");
   document.getElementById("winScreen")?.classList.add("d-none");
   document.getElementById("gameOverScreen")?.classList.add("d-none");
@@ -78,7 +82,7 @@ window.addEventListener("keyup", (event) => {
 });
 
 function showTouchControlsIfMobileLandscape() {
-  const isMobile = window.innerWidth <= 1200;
+  const isMobile = window.innerWidth <= 1400;
   const isLandscape = window.innerWidth > window.innerHeight;
   const controls = document.getElementById("touch-controls");
   if (isMobile && isLandscape) {
@@ -158,3 +162,13 @@ window.addEventListener("orientationchange", () => {
   showTouchControlsIfMobileLandscape();
   checkOrientationWarning();
 });
+
+function setCanvasHeight() {
+  const height = window.innerHeight;
+  const contentWrapper = document.querySelector('.content-wrapper');
+  contentWrapper.style.height = height + 'px';
+}
+
+window.addEventListener('resize', setCanvasHeight);
+window.addEventListener('orientationchange', setCanvasHeight);
+window.addEventListener('load', setCanvasHeight);
