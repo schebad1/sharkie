@@ -1,11 +1,20 @@
+/**
+ * Represents a background object in the level.
+ * Used for static scenery like water, rocks, etc.
+ */
 class BackgroundObject extends MovableObject {
-
     width = 720;
     height = 480;
+  
+    /**
+     * Initializes the background object.
+     * @param {string} imagePath - Path to the background image.
+     * @param {number} x - X position of the object.
+     */
     constructor(imagePath, x) {
-        super(); 
-        this.loadImage(imagePath);
-        this.y = 0; // Damit alle Objekte oben starten – und du kannst sie dann im Level positionieren.
-        this.x = x;
+      super();
+      this.loadImage(imagePath);
+      this.y = 0; // Starts at top of canvas
+      this.x = x;
     }
-}
+  }  

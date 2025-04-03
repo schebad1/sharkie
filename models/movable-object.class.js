@@ -1,8 +1,12 @@
+/**
+ * Base class for all movable game objects.
+ */
 class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
   energy = 100;
   lastHit = 0;
+
   offset = {
     top: 0,
     right: 0,
@@ -10,77 +14,99 @@ class MovableObject extends DrawableObject {
     left: 0
   };
 
+  /**
+   * Checks if this object is colliding with another.
+   * @param {MovableObject} other - The object to check against.
+   * @returns {boolean}
+   */
   isColliding(other) {
-    const a = {
-        x: this.x + (this.offset?.left || 0),
-        y: this.y + (this.offset?.top || 0),
-        width: this.width - (this.offset?.left || 0) - (this.offset?.right || 0),
-        height: this.height - (this.offset?.top || 0) - (this.offset?.bottom || 0),
-    };
-
-    const b = {
-        x: other.x + (other.offset?.left || 0),
-        y: other.y + (other.offset?.top || 0),
-        width: other.width - (other.offset?.left || 0) - (other.offset?.right || 0),
-        height: other.height - (other.offset?.top || 0) - (other.offset?.bottom || 0),
-    };
+    const a = this.getHitbox(this);
+    const b = this.getHitbox(other);
 
     return (
-        a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
     );
-}
-
-
-hit(fromEnemy) {
-  let damage = 2.5;
-
-  if (fromEnemy instanceof GreenJellyfish || fromEnemy instanceof PinkJellyfish) {
-    damage = 10; 
   }
 
-  if (fromEnemy instanceof Endboss) {
-    damage = 20; 
+  /**
+   * Calculates the hitbox for an object considering offsets.
+   * @param {MovableObject} obj
+   * @returns {{x: number, y: number, width: number, height: number}}
+   */
+  getHitbox(obj) {
+    return {
+      x: obj.x + (obj.offset?.left || 0),
+      y: obj.y + (obj.offset?.top || 0),
+      width: obj.width - (obj.offset?.left || 0) - (obj.offset?.right || 0),
+      height: obj.height - (obj.offset?.top || 0) - (obj.offset?.bottom || 0),
+    };
   }
 
-  this.energy -= damage;
-
-  if (this.energy < 0) {
-    this.energy = 0;
-  } else {
-    this.lastHit = new Date().getTime();
+  /**
+   * Applies damage based on enemy type.
+   * @param {MovableObject} fromEnemy - The attacker.
+   */
+  hit(fromEnemy) {
+    let damage = 2.5;
+    if (fromEnemy instanceof GreenJellyfish || fromEnemy instanceof PinkJellyfish) {
+      damage = 10;
+    }
+    if (fromEnemy instanceof Endboss) {
+      damage = 20;
+    }
+    this.energy -= damage;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
   }
-}
 
-
-
+  /**
+   * Checks if object is recently hurt.
+   * @returns {boolean}
+   */
   isHurt() {
-    let timepassed = new Date().getTime() - this.lastHit;
-    timepassed = timepassed / 1000;
-    return timepassed < 1;
+    const timePassed = (new Date().getTime() - this.lastHit) / 1000;
+    return timePassed < 1;
   }
 
+  /**
+   * Returns true if energy is 0.
+   * @returns {boolean}
+   */
   isDead() {
-    return this.energy == 0;
+    return this.energy === 0;
   }
 
+  /**
+   * Cycles through a given image set.
+   * @param {Array} images - Array of image paths.
+   */
   playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
+    const i = this.currentImage % images.length;
+    const path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
   }
 
+  /**
+   * Logs right movement — to be implemented later.
+   */
   moveRight() {
     console.log("Moving right");
   }
 
+  /**
+   * Moves object left with a fixed interval.
+   */
   moveLeft() {
     setInterval(() => {
       if (this.world && this.world.paused) return;
       this.x -= this.speed;
     }, 1000 / 60);
-  }  
+  }
 }

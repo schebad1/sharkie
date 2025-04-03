@@ -1,3 +1,7 @@
+/**
+ * Character class representing the player Sharkie in the 2D game.
+ * Handles movement, animation states, and player interactions.
+ */
 class Character extends MovableObject {
     height = 280;
     width = 250;
@@ -12,6 +16,8 @@ class Character extends MovableObject {
     animationInterval;
     alreadyDead = false;
     isSleeping = false;
+    offset = { top: 130, right: 50, bottom: 60, left: 50 };
+
   
     IMAGES_SWIMMING = [
       "img/1.Sharkie/1.IDLE/1.png",
@@ -117,7 +123,6 @@ class Character extends MovableObject {
       "img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png"
     ];
   
-    offset = { top: 130, right: 50, bottom: 60, left: 50 };
   
     constructor() {
       super().loadImage("img/1.Sharkie/1.IDLE/1.png");
@@ -133,197 +138,291 @@ class Character extends MovableObject {
       this.startAnimationInterval();
     }
     
-    hit(fromEnemy) {
-      super.hit(fromEnemy);
-      if (this.isSleeping) {
-        if (this.sleepInterval) {
-          clearInterval(this.sleepInterval);
-        }
-        this.isSleeping = false;
-        this.idleTime = 0;
-        this.startAnimationInterval();
-      }
-    }
-    
-    startMovementInterval() {
-      const bossBlockX = 3375;
-      this.movementInterval = setInterval(() => {
-        if (this.isDead()) {
-          return;
-        }
-        if (this.isSleeping && this.world) {
-          if (
-            this.world.keyboard.RIGHT ||
-            this.world.keyboard.LEFT ||
-            this.world.keyboard.UP ||
-            this.world.keyboard.DOWN ||
-            this.world.keyboard.SPACE ||
-            this.world.keyboard.D ||
-            this.world.keyboard.F
-          ) {
-            this.unfreezeCharacter();
-          }
-          return;
-        }
-        if (this.world && this.world.keyboard.RIGHT && this.x < bossBlockX) {
-          this.x += this.speed;
-          this.otherDirection = false;
-          this.idleTime = 0;
-        } else if (this.world && this.world.keyboard.LEFT && this.x > 0) {
-          this.x -= this.speed;
-          this.otherDirection = true;
-          this.idleTime = 0;
-        }
-        if (this.world && this.world.keyboard.UP && this.y > -100) {
-          this.y -= this.speed;
-          this.idleTime = 0;
-        } else if (this.world && this.world.keyboard.DOWN && this.y < 220) {
-          this.y += this.speed;
-          this.idleTime = 0;
-        }
-        if (this.world) {
-          this.world.camera_x = -this.x;
-        }
-        if (
-          this.world &&
-          !this.world.keyboard.RIGHT &&
-          !this.world.keyboard.LEFT &&
-          !this.world.keyboard.UP &&
-          !this.world.keyboard.DOWN &&
-          !this.isThrowing &&
-          !this.isThrowingSpecial
-        ) {
-          this.idleTime++;
-        } else {
-          this.idleTime = 0;
-        }
-      }, 1000 / 60);
-    }
-    
-    startAnimationInterval() {
-      this.animationInterval = setInterval(() => {
-        if (this.isDead() && !this.alreadyDead) {
-          this.playDeadOnce();
-          this.alreadyDead = true;
-          return;
-        }
-        if (this.isHurt()) {
-          this.playAnimation(this.IMAGES_HURT);
-        } else if (this.isThrowing) {
-          this.playAnimation(this.IMAGES_THROW_BUBBLE);
-        } else if (this.isSlapping) {
-          this.playAnimation(this.IMAGES_FINSLAP);
-        } else if (this.isThrowingSpecial) {
-          this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
-        } else if (
-          this.world &&
-          (this.world.keyboard.RIGHT ||
-            this.world.keyboard.LEFT ||
-            this.world.keyboard.UP ||
-            this.world.keyboard.DOWN)
-        ) {
-          this.playAnimation(this.IMAGES_SWIMMING);
-        } else if (this.idleTime > 200) {
-          this.sleepOnce();
-        } else {
-          this.playAnimation(this.IMAGES_STANDING);
-        }
-      }, 120);
-    }
-    
-    playDeadOnce() {
-      clearInterval(this.animationInterval);
-      let frames = this.IMAGES_DEAD;
-      let i = 0;
-      let deathInterval = setInterval(() => {
-        this.img = this.imageCache[frames[i]];
-        i++;
-        if (i >= frames.length) {
-          clearInterval(deathInterval);
-          this.img = this.imageCache[frames[frames.length - 1]];
-        }
-      }, 150);
-    }
-    
-    sleepOnce() {
-      clearInterval(this.animationInterval);
-      let frames = this.IMAGES_SLEEPING;
-      let i = 0;
-      this.sleepInterval = setInterval(() => {
-        if (this.isDead()) {
-          clearInterval(this.sleepInterval);
-          return;
-        }
-        if (
-          this.world &&
-          (this.world.keyboard.RIGHT ||
-            this.world.keyboard.LEFT ||
-            this.world.keyboard.UP ||
-            this.world.keyboard.DOWN ||
-            this.world.keyboard.SPACE ||
-            this.world.keyboard.D ||
-            this.world.keyboard.F)
-        ) {
-          clearInterval(this.sleepInterval);
-          this.unfreezeCharacter();
-          return;
-        }
-        this.img = this.imageCache[frames[i]];
-        if (i < frames.length - 2) {
-          i++;
-        } else {
-          clearInterval(this.sleepInterval);
-          this.img = this.imageCache[frames[frames.length - 2]];
-          this.isSleeping = true;
-        }
-      }, 200);
-    }
-    
-    unfreezeCharacter() {
-      this.isSleeping = false;
-      this.idleTime = 0;
-      this.startAnimationInterval();
-    }
-    
-    throwAnimation() {
-      if (this.isDead()) return;
-      this.isThrowing = true;
-      this.playAnimation(this.IMAGES_THROW_BUBBLE);
-      setTimeout(() => {
-        this.isThrowing = false;
-        this.idleTime = 0;
-      }, 500);
-    }
-    
-    finSlapAnimation() {
-      if (this.isDead()) return;
-      this.isSlapping = true;
-      this.playAnimation(this.IMAGES_FINSLAP);
-      setTimeout(() => {
-        this.isSlapping = false;
-      }, 500);
-    }
-    
-    throwPoisonBubbleAnimation() {
-      if (this.isDead()) return;
-      this.isThrowingSpecial = true;
-      this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
-      setTimeout(() => {
-        this.isThrowingSpecial = false;
-        this.idleTime = 0;
-      }, 500);
-    }
-    
-    stopIntervals() {
-      if (this.movementInterval) {
-        clearInterval(this.movementInterval);
-      }
-      if (this.animationInterval) {
-        clearInterval(this.animationInterval);
-      }
-      if (this.sleepInterval) {
-        clearInterval(this.sleepInterval);
-      }
-    }
+/**
+ * Handles what happens when the character gets hit.
+ * Wakes the character if sleeping and triggers death animation if dead.
+ * 
+ * @param {boolean} fromEnemy - Whether the hit was caused by an enemy.
+ */
+hit(fromEnemy) {
+  super.hit(fromEnemy);
+  this.handleWakeUpOnHit();
+
+  if (this.isDead() && !this.alreadyDead) {
+    this.playDeadOnce();
+    this.alreadyDead = true;
   }
-  
+}
+
+/**
+ * Wakes the character up from sleep and restarts the animation.
+ */
+handleWakeUpOnHit() {
+  if (!this.isSleeping) return;
+
+  if (this.sleepInterval) {
+    clearInterval(this.sleepInterval);
+  }
+
+  this.isSleeping = false;
+  this.idleTime = 0;
+  this.startAnimationInterval();
+}
+
+/**
+ * Starts the character movement interval based on keyboard input.
+ */
+startMovementInterval() {
+  const bossBlockX = 3375;
+
+  this.movementInterval = setInterval(() => {
+    if (this.isDead()) return;
+
+    if (this.isSleeping && this.world) {
+      if (this.isAnyKeyPressed()) this.unfreezeCharacter();
+      return;
+    }
+
+    this.handleHorizontalMovement(bossBlockX);
+    this.handleVerticalMovement();
+    this.updateCamera();
+    this.trackIdleState();
+  }, 1000 / 60);
+}
+
+/**
+ * Checks if any key relevant to movement or actions is currently pressed.
+ * @returns {boolean}
+ */
+isAnyKeyPressed() {
+  const k = this.world.keyboard;
+  return k.RIGHT || k.LEFT || k.UP || k.DOWN || k.SPACE || k.D || k.F;
+}
+
+/**
+ * Moves the character left or right based on input.
+ * @param {number} bossBlockX - Limit for how far right the character can go.
+ */
+handleHorizontalMovement(bossBlockX) {
+  if (this.world?.keyboard.RIGHT && this.x < bossBlockX) {
+    this.x += this.speed;
+    this.otherDirection = false;
+    this.idleTime = 0;
+  } else if (this.world?.keyboard.LEFT && this.x > 0) {
+    this.x -= this.speed;
+    this.otherDirection = true;
+    this.idleTime = 0;
+  }
+}
+
+/**
+ * Moves the character up or down based on input.
+ */
+handleVerticalMovement() {
+  if (this.world?.keyboard.UP && this.y > -100) {
+    this.y -= this.speed;
+    this.idleTime = 0;
+  } else if (this.world?.keyboard.DOWN && this.y < 220) {
+    this.y += this.speed;
+    this.idleTime = 0;
+  }
+}
+
+/**
+ * Updates the camera position to follow the character.
+ */
+updateCamera() {
+  if (this.world) {
+    this.world.camera_x = -this.x;
+  }
+}
+
+/**
+ * Increments idle time if no movement or action is happening.
+ */
+trackIdleState() {
+  const k = this.world?.keyboard;
+  const noMovement =
+    k && !k.RIGHT && !k.LEFT && !k.UP && !k.DOWN && !this.isThrowing && !this.isThrowingSpecial;
+
+  this.idleTime = noMovement ? this.idleTime + 1 : 0;
+}
+    
+/**
+ * Starts the animation interval and controls character animation state.
+ */
+startAnimationInterval() {
+  this.animationInterval = setInterval(() => {
+    if (this.shouldPlayDeath()) return;
+
+    if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isThrowing) {
+      this.playAnimation(this.IMAGES_THROW_BUBBLE);
+    } else if (this.isSlapping) {
+      this.playAnimation(this.IMAGES_FINSLAP);
+    } else if (this.isThrowingSpecial) {
+      this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
+    } else if (this.isMoving()) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+    } else if (this.idleTime > 200) {
+      this.sleepOnce();
+    } else {
+      this.playAnimation(this.IMAGES_STANDING);
+    }
+  }, 120);
+}
+
+/**
+ * Checks and plays the death animation once, if needed.
+ * @returns {boolean} - True if death animation was triggered.
+ */
+shouldPlayDeath() {
+  if (this.isDead() && !this.alreadyDead) {
+    this.playDeadOnce();
+    this.alreadyDead = true;
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Determines whether the character is currently moving.
+ * @returns {boolean}
+ */
+isMoving() {
+  const k = this.world?.keyboard;
+  return k?.RIGHT || k?.LEFT || k?.UP || k?.DOWN;
+}
+    
+/**
+ * Plays the death animation once and stops the current animation interval.
+ */
+playDeadOnce() {
+  clearInterval(this.animationInterval);
+  const frames = this.IMAGES_DEAD;
+  let i = 0;
+
+  const deathInterval = setInterval(() => {
+    this.img = this.imageCache[frames[i]];
+    i++;
+
+    if (i >= frames.length) {
+      clearInterval(deathInterval);
+      this.setFinalDeathFrame(frames);
+    }
+  }, 150);
+}
+
+/**
+ * Sets the last image frame of the death animation.
+ * @param {string[]} frames - Array of death image paths.
+ */
+setFinalDeathFrame(frames) {
+  this.img = this.imageCache[frames[frames.length - 1]];
+}
+    
+    /**
+ * Plays the sleep animation once, unless interrupted.
+ */
+sleepOnce() {
+  clearInterval(this.animationInterval);
+  const frames = this.IMAGES_SLEEPING;
+  let i = 0;
+
+  this.sleepInterval = setInterval(() => {
+    if (this.shouldInterruptSleep()) return;
+
+    this.img = this.imageCache[frames[i]];
+
+    if (i < frames.length - 2) {
+      i++;
+    } else {
+      clearInterval(this.sleepInterval);
+      this.img = this.imageCache[frames[frames.length - 2]];
+      this.isSleeping = true;
+    }
+  }, 200);
+}
+
+/**
+ * Checks whether the sleep animation should be interrupted.
+ * @returns {boolean}
+ */
+shouldInterruptSleep() {
+  if (this.isDead()) {
+    clearInterval(this.sleepInterval);
+    return true;
+  }
+
+  if (this.isAnyKeyPressed()) {
+    clearInterval(this.sleepInterval);
+    this.unfreezeCharacter();
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Wakes the character from sleep and restarts animation.
+ */
+unfreezeCharacter() {
+  this.isSleeping = false;
+  this.idleTime = 0;
+  this.startAnimationInterval();
+}
+
+/**
+ * Triggers throw bubble animation for a short duration.
+ */
+throwAnimation() {
+  if (this.isDead()) return;
+
+  this.isThrowing = true;
+  this.playAnimation(this.IMAGES_THROW_BUBBLE);
+
+  setTimeout(() => {
+    this.isThrowing = false;
+    this.idleTime = 0;
+  }, 500);
+}
+
+/**
+ * Triggers slap animation for a short duration.
+ */
+finSlapAnimation() {
+  if (this.isDead()) return;
+
+  this.isSlapping = true;
+  this.playAnimation(this.IMAGES_FINSLAP);
+
+  setTimeout(() => {
+    this.isSlapping = false;
+  }, 500);
+}
+
+/**
+ * Triggers poison bubble throw animation for a short duration.
+ */
+throwPoisonBubbleAnimation() {
+  if (this.isDead()) return;
+
+  this.isThrowingSpecial = true;
+  this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
+
+  setTimeout(() => {
+    this.isThrowingSpecial = false;
+    this.idleTime = 0;
+  }, 500);
+}
+
+/**
+ * Stops all running intervals of the character.
+ */
+stopIntervals() {
+  if (this.movementInterval) clearInterval(this.movementInterval);
+  if (this.animationInterval) clearInterval(this.animationInterval);
+  if (this.sleepInterval) clearInterval(this.sleepInterval);
+}
+}
