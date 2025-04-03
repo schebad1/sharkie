@@ -18,19 +18,16 @@ function startGame() {
     world.stopGame();
     world = null;
   }
-
   if (soundManager.isMuted) {
-    soundManager.toggleMute(); 
+    soundManager.toggleMute();
   }
   document.getElementById("volumeIcon").src = "img/volume-high-solid.svg";
-
   world = new World(canvas, keyboard, soundManager);
 }
 
 function toggleSound() {
   let volumeIcon = document.getElementById("volumeIcon");
   soundManager.toggleMute();
-
   if (soundManager.isMuted) {
     volumeIcon.src = "img/volume-xmark-solid.svg";
   } else {
@@ -80,17 +77,9 @@ window.addEventListener("keyup", (event) => {
   if (event.keyCode == 70) keyboard.F = false;
 });
 
-function pressKey(keyName) {
-  keyboard[keyName] = true;
-  setTimeout(() => {
-    keyboard[keyName] = false;
-  }, 200);
-}
-
 function showTouchControlsIfMobileLandscape() {
   const isMobile = window.innerWidth <= 1200;
   const isLandscape = window.innerWidth > window.innerHeight;
-
   const controls = document.getElementById("touch-controls");
   if (isMobile && isLandscape) {
     controls.classList.remove("d-none");
@@ -101,44 +90,71 @@ function showTouchControlsIfMobileLandscape() {
 
 function checkOrientationWarning() {
   const maxDim = Math.max(window.innerWidth, window.innerHeight);
-  const isSmallDevice = maxDim <= 1400; 
-  
+  const isSmallDevice = maxDim <= 1400;
   const isPortrait = window.innerHeight > window.innerWidth;
-
-  const rotateWarning = document.getElementById('rotateWarning');
-  const contentWrapper = document.querySelector('.content-wrapper');
-
+  const rotateWarning = document.getElementById("rotateWarning");
+  const contentWrapper = document.querySelector(".content-wrapper");
   if (isSmallDevice && isPortrait) {
-    rotateWarning.classList.remove('d-none');
-    contentWrapper.classList.add('d-none');
+    rotateWarning.classList.remove("d-none");
+    contentWrapper.classList.add("d-none");
   } else {
-    rotateWarning.classList.add('d-none');
-    contentWrapper.classList.remove('d-none');
+    rotateWarning.classList.add("d-none");
+    contentWrapper.classList.remove("d-none");
   }
 }
 
 function showImprint() {
-  document.getElementById('startScreen').classList.add('d-none');
-  document.getElementById('imprintScreen').classList.remove('d-none');
+  document.getElementById("startScreen").classList.add("d-none");
+  document.getElementById("imprintScreen").classList.remove("d-none");
 }
 
 function closeImprint() {
-  document.getElementById('imprintScreen').classList.add('d-none');
-  document.getElementById('startScreen').classList.remove('d-none');
+  document.getElementById("imprintScreen").classList.add("d-none");
+  document.getElementById("startScreen").classList.remove("d-none");
 }
 
+window.addEventListener("load", () => {
+  showTouchControlsIfMobileLandscape();
+  checkOrientationWarning();
 
-window.addEventListener('load', () => {
+  const leftArrow = document.getElementById("leftArrow");
+  const rightArrow = document.getElementById("rightArrow");
+  const upArrow = document.getElementById("upArrow");
+  const downArrow = document.getElementById("downArrow");
+  const spaceButton = document.getElementById("spaceButton");
+  const dButton = document.getElementById("dButton");
+  const fButton = document.getElementById("fButton");
+
+  function addTouchListeners(btn, downKey, upKey) {
+    btn.addEventListener("touchstart", () => {
+      keyboard[downKey] = true;
+    });
+    btn.addEventListener("touchend", () => {
+      keyboard[downKey] = false;
+    });
+    btn.addEventListener("touchcancel", () => {
+      keyboard[downKey] = false;
+    });
+    btn.addEventListener("touchleave", () => {
+      keyboard[downKey] = false;
+    });
+  }
+
+  addTouchListeners(leftArrow, "LEFT");
+  addTouchListeners(rightArrow, "RIGHT");
+  addTouchListeners(upArrow, "UP");
+  addTouchListeners(downArrow, "DOWN");
+  addTouchListeners(spaceButton, "SPACE");
+  addTouchListeners(dButton, "D");
+  addTouchListeners(fButton, "F");
+});
+
+window.addEventListener("resize", () => {
   showTouchControlsIfMobileLandscape();
   checkOrientationWarning();
 });
 
-window.addEventListener('resize', () => {
-  showTouchControlsIfMobileLandscape();
-  checkOrientationWarning();
-});
-
-window.addEventListener('orientationchange', () => {
+window.addEventListener("orientationchange", () => {
   showTouchControlsIfMobileLandscape();
   checkOrientationWarning();
 });

@@ -363,6 +363,11 @@ canvas {
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     transition: transform 0.1s ease;
   }
+
+  .touch-btn img {
+    height: 15px;
+    width: 10px;
+  }
   
   .touch-btn:hover {
     transform: scale(1.05);
@@ -415,11 +420,17 @@ canvas {
     justify-content: center;
     transition: transform 0.2s ease;
   }
-  
+
   .imprint-buttons .home-btn:hover {
     transform: scale(1.2);
   }
   
+  .headline {
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    top: 65px;
+  }
   
 @media only screen and (max-width: 720px) {
     canvas {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html translate="no" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,9 +29,13 @@
   <script src="./models/endboss.class.js"></script>
   <script src="./levels/level1.js"></script>
   <script src="./js/game.js"></script>
+  <link rel="icon" type="image/png" href="img/1.Sharkie/4.Attack/Bubble trap/Bubble.png" />
 </head>
 <body>
   <main class="content-wrapper">
+    <div class="headline">
+  <h1>Sharkie</h1>
+    </div>
     <div class="icon-container">
       <img id="volumeIcon" class="icon-btn" src="img/volume-xmark-solid.svg" alt="Sound aus" onclick="toggleSound()">
       <img class="icon-btn" src="img/circle-info-solid.svg" alt="Info" onclick="showInfo()">
@@ -193,21 +197,26 @@
     </div>
   </div>
 </section>
-
-
-
-    <section class="view-area game-screen d-none" id="gameScreen">
-      <canvas id="canvas" width="720" height="480"></canvas>
-      <div id="touch-controls" class="touch-controls d-none">
-        <button class="touch-btn" onclick="pressKey('LEFT')">◀</button>
-        <button class="touch-btn" onclick="pressKey('RIGHT')">▶</button>
-        <button class="touch-btn" onclick="pressKey('UP')">▲</button>
-        <button class="touch-btn" onclick="pressKey('DOWN')">▼</button>
-        <button class="touch-btn" onclick="pressKey('SPACE')">SLAP</button>
-        <button class="touch-btn" onclick="pressKey('D')">BUBBLE</button>
-        <button class="touch-btn" onclick="pressKey('F')">POISON</button>
-      </div>      
-    </section>
+<section class="view-area game-screen d-none" id="gameScreen">
+  <canvas id="canvas" width="720" height="480"></canvas>
+  <div id="touch-controls" class="touch-controls d-none">
+    <button id="leftArrow" class="touch-btn">
+      <img src="img/caret-left-solid.svg" alt="LEFT">
+    </button>
+    <button id="rightArrow" class="touch-btn">
+      <img src="img/caret-right-solid.svg" alt="RIGHT">
+    </button>
+    <button id="upArrow" class="touch-btn">
+      <img src="img/caret-up-solid.svg" alt="UP">
+    </button>
+    <button id="downArrow" class="touch-btn">
+      <img src="img/caret-down-solid.svg" alt="DOWN">
+    </button>
+    <button id="spaceButton" class="touch-btn">SLAP</button>
+    <button id="dButton" class="touch-btn">BUBBLE</button>
+    <button id="fButton" class="touch-btn">POISON</button>
+  </div>
+</section>
     <section class="view-area info-screen d-none" id="infoOverlay">
       <div class="info-content">
         <div class="bubble-construction">
