@@ -4,6 +4,16 @@
     box-sizing: border-box;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+  a:hover {
+    text-decoration: underline;
+}
+
 button,
 .icon-btn,
 .try-again-btn,
@@ -351,7 +361,6 @@ canvas {
     text-align: center;
     padding: 20px;
   }
-  
 
   .touch-controls {
     display: flex;
@@ -412,9 +421,17 @@ canvas {
     width: 90%;
     max-height: 90%;
     overflow-y: auto;
-    color: white;
-    padding: 20px;
+    color: #F1F1F1;
+    padding: 30px;
     border-radius: 12px;
+    text-align: left;  
+    line-height: 1.4; 
+    background-color: rgba(92, 113, 146, 0.6);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+
+  .imprint-text {
+    padding-right: 60px;
   }
   
   .imprint-buttons .home-btn {
@@ -432,6 +449,7 @@ canvas {
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
+    font-family: 'Luckiest Guy';
   }
 
   .imprint-buttons .home-btn:hover {
