@@ -58,7 +58,7 @@ class MovableObject extends DrawableObject {
       damage = 20;
     }
     this.energy -= damage;
-    if (this.energy < 0) {
+    if (this.energy <= 0) {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
@@ -79,8 +79,8 @@ class MovableObject extends DrawableObject {
    * @returns {boolean}
    */
   isDead() {
-    return this.energy === 0;
-  }
+    return this.energy <= 0;
+  }  
 
   /**
    * Cycles through a given image set.

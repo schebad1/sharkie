@@ -151,14 +151,17 @@ class Character extends MovableObject {
    * @param {boolean} fromEnemy - Whether the hit was caused by an enemy.
    */
   hit(fromEnemy) {
-    super.hit(fromEnemy);
+    super.hit(fromEnemy); 
     this.handleWakeUpOnHit();
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
     if (this.isDead() && !this.alreadyDead) {
       this.playDeadOnce();
       this.alreadyDead = true;
     }
   }
-
+  
   /**
    * Wakes the character up from sleep and restarts the animation.
    */
