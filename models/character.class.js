@@ -18,7 +18,6 @@ class Character extends MovableObject {
     isSleeping = false;
     offset = { top: 130, right: 50, bottom: 60, left: 50 };
 
-  
     IMAGES_SWIMMING = [
       "img/1.Sharkie/1.IDLE/1.png",
       "img/1.Sharkie/3.Swim/1.png",
@@ -123,7 +122,6 @@ class Character extends MovableObject {
       "img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png"
     ];
   
-  
     constructor() {
       super().loadImage("img/1.Sharkie/1.IDLE/1.png");
       this.loadImages(this.IMAGES_SWIMMING);
@@ -134,6 +132,7 @@ class Character extends MovableObject {
       this.loadImages(this.IMAGES_HURT);
       this.loadImages(this.IMAGES_THROW_BUBBLE);
       this.loadImages(this.IMAGES_THROW_BUBBLE_POISON);
+      this.isAnimating = false;
       this.startMovementInterval();
       this.startAnimationInterval();
     }
@@ -147,7 +146,6 @@ class Character extends MovableObject {
 hit(fromEnemy) {
   super.hit(fromEnemy);
   this.handleWakeUpOnHit();
-
   if (this.isDead() && !this.alreadyDead) {
     this.playDeadOnce();
     this.alreadyDead = true;
@@ -159,11 +157,9 @@ hit(fromEnemy) {
  */
 handleWakeUpOnHit() {
   if (!this.isSleeping) return;
-
   if (this.sleepInterval) {
     clearInterval(this.sleepInterval);
   }
-
   this.isSleeping = false;
   this.idleTime = 0;
   this.startAnimationInterval();
@@ -174,15 +170,12 @@ handleWakeUpOnHit() {
  */
 startMovementInterval() {
   const bossBlockX = 3375;
-
   this.movementInterval = setInterval(() => {
     if (this.isDead()) return;
-
     if (this.isSleeping && this.world) {
       if (this.isAnyKeyPressed()) this.unfreezeCharacter();
       return;
     }
-
     this.handleHorizontalMovement(bossBlockX);
     this.handleVerticalMovement();
     this.updateCamera();
@@ -244,17 +237,20 @@ trackIdleState() {
   const k = this.world?.keyboard;
   const noMovement =
     k && !k.RIGHT && !k.LEFT && !k.UP && !k.DOWN && !this.isThrowing && !this.isThrowingSpecial;
-
-  this.idleTime = noMovement ? this.idleTime + 1 : 0;
+  if (!this.isAnimating && noMovement) {
+    this.idleTime++;
+  } else {
+    this.idleTime = 0;
+  }
 }
-    
+   
 /**
  * Starts the animation interval and controls character animation state.
  */
 startAnimationInterval() {
   this.animationInterval = setInterval(() => {
+    if (this.isAnimating) return;
     if (this.shouldPlayDeath()) return;
-
     if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isThrowing) {
@@ -302,11 +298,9 @@ playDeadOnce() {
   clearInterval(this.animationInterval);
   const frames = this.IMAGES_DEAD;
   let i = 0;
-
   const deathInterval = setInterval(() => {
     this.img = this.imageCache[frames[i]];
     i++;
-
     if (i >= frames.length) {
       clearInterval(deathInterval);
       this.setFinalDeathFrame(frames);
@@ -322,19 +316,16 @@ setFinalDeathFrame(frames) {
   this.img = this.imageCache[frames[frames.length - 1]];
 }
     
-    /**
+/**
  * Plays the sleep animation once, unless interrupted.
  */
 sleepOnce() {
   clearInterval(this.animationInterval);
   const frames = this.IMAGES_SLEEPING;
   let i = 0;
-
   this.sleepInterval = setInterval(() => {
     if (this.shouldInterruptSleep()) return;
-
     this.img = this.imageCache[frames[i]];
-
     if (i < frames.length - 2) {
       i++;
     } else {
@@ -354,13 +345,11 @@ shouldInterruptSleep() {
     clearInterval(this.sleepInterval);
     return true;
   }
-
   if (this.isAnyKeyPressed()) {
     clearInterval(this.sleepInterval);
     this.unfreezeCharacter();
     return true;
   }
-
   return false;
 }
 
@@ -393,13 +382,17 @@ throwAnimation() {
  */
 finSlapAnimation() {
   if (this.isDead()) return;
-
+  if (this.sleepInterval) {
+    clearInterval(this.sleepInterval);
+    this.sleepInterval = null;
+    this.isSleeping = false;
+  }
+  this.idleTime = 0;
   this.isSlapping = true;
-  this.playAnimation(this.IMAGES_FINSLAP);
-
-  setTimeout(() => {
+  this.playOneTimeAnimation(this.IMAGES_FINSLAP, 500, () => {
     this.isSlapping = false;
-  }, 500);
+    this.idleTime = 0; 
+  });
 }
 
 /**
@@ -407,10 +400,8 @@ finSlapAnimation() {
  */
 throwPoisonBubbleAnimation() {
   if (this.isDead()) return;
-
   this.isThrowingSpecial = true;
   this.playAnimation(this.IMAGES_THROW_BUBBLE_POISON);
-
   setTimeout(() => {
     this.isThrowingSpecial = false;
     this.idleTime = 0;
@@ -424,5 +415,31 @@ stopIntervals() {
   if (this.movementInterval) clearInterval(this.movementInterval);
   if (this.animationInterval) clearInterval(this.animationInterval);
   if (this.sleepInterval) clearInterval(this.sleepInterval);
+}
+
+/**
+ * Plays a one-time animation sequence.
+ * Temporarily stops the standard animation loop, displays the provided frames
+ * over the given duration, and then restarts the standard animation loop.
+ *
+ * @param {string[]} frames - Array of image paths to display.
+ * @param {number} [duration=500] - Total duration of the animation in milliseconds.
+ * @param {Function|null} [callback=null] - Optional callback to run after the animation finishes.
+ */
+playOneTimeAnimation(frames, duration = 500, callback = null) {
+  this.isAnimating = true;  
+  clearInterval(this.animationInterval); 
+  let i = 0;
+  const frameDuration = duration / frames.length;
+  const interval = setInterval(() => {
+    this.img = this.imageCache[frames[i]];
+    i++;
+    if (i >= frames.length) {
+      clearInterval(interval);
+      this.isAnimating = false;  
+      if (callback) callback();
+      this.startAnimationInterval(); 
+    }
+  }, frameDuration);
 }
 }
