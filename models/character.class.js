@@ -339,44 +339,63 @@ class Character extends MovableObject {
     clearInterval(this.animationInterval);
     const frames = this.IMAGES_SLEEPING;
     let i = 0;
-    this.sleepInterval = setInterval(() => {
-      if (this.shouldInterruptSleep()) return;
+    const introSleep = setInterval(() => {
       this.img = this.imageCache[frames[i]];
-      if (i < frames.length - 2) {
-        i++;
-      } else {
-        clearInterval(this.sleepInterval);
-        this.img = this.imageCache[frames[frames.length - 2]];
-        this.isSleeping = true;
+      i++;
+      if (i === 10) {
+        clearInterval(introSleep);
+        this.startSleepLoop();
       }
     }, 200);
   }
-
+  
   /**
-   * Checks whether the sleep animation should be interrupted.
-   * @returns {boolean}
-   */
-  shouldInterruptSleep() {
-    if (this.isDead()) {
-      clearInterval(this.sleepInterval);
-      return true;
-    }
+ * Starts a looping animation between three sleep frames.
+ */
+startSleepLoop() {
+  const frames = [
+    this.imageCache["img/1.Sharkie/2.Long_IDLE/I11.png"],
+    this.imageCache["img/1.Sharkie/2.Long_IDLE/I12.png"],
+    this.imageCache["img/1.Sharkie/2.Long_IDLE/I13.png"],
+  ];
+  let i = 0;
+  this.sleepInterval = setInterval(() => {
     if (this.isAnyKeyPressed()) {
       clearInterval(this.sleepInterval);
+      this.sleepInterval = null;
       this.unfreezeCharacter();
-      return true;
+      return;
     }
-    return false;
-  }
+    this.img = frames[i];
+    i = (i + 1) % frames.length;
+  }, 300);
+  this.isSleeping = true;
+}
 
-  /**
-   * Wakes the character from sleep and restarts animation.
-   */
-  unfreezeCharacter() {
-    this.isSleeping = false;
-    this.idleTime = 0;
-    this.startAnimationInterval();
+/**
+ * Stops the sleep loop if the character moves or dies.
+ */
+shouldInterruptSleep() {
+  if (this.isDead() || this.isAnyKeyPressed() || this.idleTime < 50) {
+    clearInterval(this.sleepInterval);
+    this.unfreezeCharacter();
+    return true;
   }
+  return false;
+}
+
+/**
+ * Wakes the character and restarts normal animations.
+ */
+unfreezeCharacter() {
+  if (this.sleepInterval) {
+    clearInterval(this.sleepInterval);
+    this.sleepInterval = null;
+  }
+  this.isSleeping = false;
+  this.idleTime = 0;
+  this.startAnimationInterval();
+}
 
   /**
    * Triggers throw bubble animation for a short duration.
