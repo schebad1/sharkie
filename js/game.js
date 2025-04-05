@@ -154,7 +154,7 @@ window.addEventListener("load", () => {
   addTouchListeners(document.getElementById("dButton"), "D");
   addTouchListeners(document.getElementById("fButton"), "F");
   setCanvasHeight();
-  // window.addEventListener("contextmenu", (e) => e.preventDefault());
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
 });
 
 /**
