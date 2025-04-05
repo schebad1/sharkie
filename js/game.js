@@ -23,9 +23,10 @@ function startGame() {
     world.stopGame();
     world = null;
   }
-  if (soundManager.isMuted) soundManager.toggleMute();
   soundManager.stopEndbossMusic();
-  document.getElementById("volumeIcon").src = "img/volume-high-solid.svg";
+  document.getElementById("volumeIcon").src = soundManager.isMuted
+  ? "img/volume-xmark-solid.svg"
+  : "img/volume-high-solid.svg";
   world = new World(canvas, keyboard, soundManager);
 }
 

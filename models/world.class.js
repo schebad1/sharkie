@@ -212,6 +212,7 @@ checkGameWin() {
     this.winTriggered = true;
 
     this.soundManager.stopEndbossMusic();
+    this.soundManager.isEndbossMusicActive = false;
     this.soundManager.playWinSound();
     this.soundManager.playBackgroundMusic();
 

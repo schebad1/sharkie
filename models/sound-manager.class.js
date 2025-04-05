@@ -20,6 +20,7 @@ class SoundManager {
       this.backgroundMusic.currentTime = 0;
       this.endbossIntroMusic.loop = true;
       this.isMuted = true;
+      this.isEndbossMusicActive = false;
     }
   
     /** Plays background ocean loop. */
@@ -66,9 +67,13 @@ class SoundManager {
         this.stopBackgroundMusic();
         this.stopEndbossMusic();
       } else {
-        this.playBackgroundMusic();
+        if (this.isEndbossMusicActive) {
+          this.playEndbossMusic();
+        } else {
+          this.playBackgroundMusic();
+        }
       }
-    }
+    }    
   
     /** Plays fin slap sound. */
     playFinSlapSound() {
@@ -112,6 +117,7 @@ class SoundManager {
   
     /** Starts endboss intro music and stops background loop. */
     playEndbossMusic() {
+      this.isEndbossMusicActive = true; 
       if (!this.isMuted) {
         this.stopBackgroundMusic();
         this.endbossIntroMusic.currentTime = 0;
@@ -123,5 +129,5 @@ class SoundManager {
     stopEndbossMusic() {
       this.endbossIntroMusic.pause();
       this.endbossIntroMusic.currentTime = 0;
-    }
+    }    
   }  
