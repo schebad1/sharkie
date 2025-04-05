@@ -7,7 +7,7 @@ class Endboss extends MovableObject {
   isActive = false;
   hasEntered = false;
   energy = 100;
-  hitPointsPerPoisonBubble = 20;
+  hitPointsPerPoisonBubble = 15;
   hasDied = false;
   offset = { top: 150, right: 40, bottom: 60, left: 40 };
 
@@ -75,7 +75,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.x = 3700;
     this.y = -150;
-    this.speed = 1.5;
+    this.speed = 5;
   }
 
   /**

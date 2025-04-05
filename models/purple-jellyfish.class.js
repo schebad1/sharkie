@@ -50,7 +50,7 @@ class PurpleJellyfish extends MovableObject {
    */
   setOffset() {
     this.offset = {
-      top: 25,
+      top: 20,
       right: 25,
       bottom: 25,
       left: 25,

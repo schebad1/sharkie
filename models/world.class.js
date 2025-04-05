@@ -278,7 +278,7 @@ throwBubble() {
       false,
       false
     );
-
+    bubble.world = this;
     this.throwableObject.push(bubble);
     this.soundManager.playBubbleShootSound();
   }, 400);
@@ -467,17 +467,17 @@ checkBubbleEnemyHit(bubble, index) {
       enemy instanceof YellowJellyfish ||
       enemy instanceof PinkJellyfish ||
       enemy instanceof GreenJellyfish;
-
-    if (
-      !bubble.isPoisonBubble &&
-      isTarget &&
-      !enemy.isDead &&
-      bubble.isColliding(enemy)
-    ) {
-      this.throwableObject.splice(index, 1);
-      enemy.die();
-      return true;
-    }
+      if (
+        !bubble.isPoisonBubble &&
+        isTarget &&
+        !enemy.isDead &&
+        bubble.isColliding(enemy)
+      ) {
+        if (bubble.bubbleInterval) clearInterval(bubble.bubbleInterval);
+        this.throwableObject.splice(index, 1);
+        enemy.die();
+        return true;
+      }
   }
   return false;
 }

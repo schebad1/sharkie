@@ -41,7 +41,7 @@ class YellowJellyfish extends MovableObject {
    */
   setOffset() {
     this.offset = {
-      top: 25,
+      top: 15,
       right: 25,
       bottom: 25,
       left: 25,
