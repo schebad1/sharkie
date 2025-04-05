@@ -39,7 +39,7 @@ class Pufferfish extends MovableObject {
       top: 10,
       right: 10,
       bottom: 20,
-      left: 10,
+      left: 15,
     };
   }
 

@@ -16,7 +16,7 @@ class Character extends MovableObject {
     animationInterval;
     alreadyDead = false;
     isSleeping = false;
-    offset = { top: 130, right: 50, bottom: 60, left: 50 };
+    offset = { top: 140, right: 45, bottom: 70, left: 50 };
 
     IMAGES_SWIMMING = [
       "img/1.Sharkie/1.IDLE/1.png",

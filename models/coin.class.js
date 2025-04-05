@@ -23,6 +23,12 @@ class Coin extends MovableObject {
       this.x = x;
       this.y = y;
       this.animate();
+      this.offset = {
+        top: 23,
+        right: 24,
+        bottom: 23,
+        left: 24,
+      };      
     }
   
     /**
