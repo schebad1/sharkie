@@ -132,10 +132,11 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_THROW_BUBBLE);
     this.loadImages(this.IMAGES_THROW_BUBBLE_POISON);
     this.isAnimating = false;
+    this.pendingSlapHit = null;
     this.startMovementInterval();
     this.startAnimationInterval();
     this.defaultOffset = { top: 140, right: 45, bottom: 70, left: 50 };
-    this.attackOffset = {right: 27.5};
+    this.attackOffset = { right: 27.5 };
     this.offset = {
       top: this.defaultOffset.top,
       right: this.defaultOffset.right,
@@ -151,7 +152,7 @@ class Character extends MovableObject {
    * @param {boolean} fromEnemy - Whether the hit was caused by an enemy.
    */
   hit(fromEnemy) {
-    super.hit(fromEnemy); 
+    super.hit(fromEnemy);
     this.handleWakeUpOnHit();
     if (this.energy < 0) {
       this.energy = 0;
@@ -161,7 +162,7 @@ class Character extends MovableObject {
       this.alreadyDead = true;
     }
   }
-  
+
   /**
    * Wakes the character up from sleep and restarts the animation.
    */
@@ -348,54 +349,54 @@ class Character extends MovableObject {
       }
     }, 200);
   }
-  
+
   /**
- * Starts a looping animation between three sleep frames.
- */
-startSleepLoop() {
-  const frames = [
-    this.imageCache["img/1.Sharkie/2.Long_IDLE/I11.png"],
-    this.imageCache["img/1.Sharkie/2.Long_IDLE/I12.png"],
-    this.imageCache["img/1.Sharkie/2.Long_IDLE/I13.png"],
-  ];
-  let i = 0;
-  this.sleepInterval = setInterval(() => {
-    if (this.isAnyKeyPressed()) {
+   * Starts a looping animation between three sleep frames.
+   */
+  startSleepLoop() {
+    const frames = [
+      this.imageCache["img/1.Sharkie/2.Long_IDLE/I11.png"],
+      this.imageCache["img/1.Sharkie/2.Long_IDLE/I12.png"],
+      this.imageCache["img/1.Sharkie/2.Long_IDLE/I13.png"],
+    ];
+    let i = 0;
+    this.sleepInterval = setInterval(() => {
+      if (this.isAnyKeyPressed()) {
+        clearInterval(this.sleepInterval);
+        this.sleepInterval = null;
+        this.unfreezeCharacter();
+        return;
+      }
+      this.img = frames[i];
+      i = (i + 1) % frames.length;
+    }, 300);
+    this.isSleeping = true;
+  }
+
+  /**
+   * Stops the sleep loop if the character moves or dies.
+   */
+  shouldInterruptSleep() {
+    if (this.isDead() || this.isAnyKeyPressed() || this.idleTime < 50) {
+      clearInterval(this.sleepInterval);
+      this.unfreezeCharacter();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Wakes the character and restarts normal animations.
+   */
+  unfreezeCharacter() {
+    if (this.sleepInterval) {
       clearInterval(this.sleepInterval);
       this.sleepInterval = null;
-      this.unfreezeCharacter();
-      return;
     }
-    this.img = frames[i];
-    i = (i + 1) % frames.length;
-  }, 300);
-  this.isSleeping = true;
-}
-
-/**
- * Stops the sleep loop if the character moves or dies.
- */
-shouldInterruptSleep() {
-  if (this.isDead() || this.isAnyKeyPressed() || this.idleTime < 50) {
-    clearInterval(this.sleepInterval);
-    this.unfreezeCharacter();
-    return true;
+    this.isSleeping = false;
+    this.idleTime = 0;
+    this.startAnimationInterval();
   }
-  return false;
-}
-
-/**
- * Wakes the character and restarts normal animations.
- */
-unfreezeCharacter() {
-  if (this.sleepInterval) {
-    clearInterval(this.sleepInterval);
-    this.sleepInterval = null;
-  }
-  this.isSleeping = false;
-  this.idleTime = 0;
-  this.startAnimationInterval();
-}
 
   /**
    * Triggers throw bubble animation for a short duration.
@@ -413,7 +414,7 @@ unfreezeCharacter() {
   }
 
   /**
-   * Triggers slap animation for a short duration.
+   * Triggers slap animation for a short duration and kills the enemy after animation ends.
    */
   finSlapAnimation() {
     if (this.isDead()) return;
@@ -429,9 +430,13 @@ unfreezeCharacter() {
       this.isSlapping = false;
       this.idleTime = 0;
       this.offset.right = this.defaultOffset.right;
+      if (this.pendingSlapHit && !this.pendingSlapHit.isDead) {
+        this.pendingSlapHit.die();
+        this.pendingSlapHit = null;
+      }
     });
   }
-  
+
   /**
    * Triggers poison bubble throw animation for a short duration.
    */

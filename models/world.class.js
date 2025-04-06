@@ -431,14 +431,13 @@ checkFinSlap() {
   ) {
     this.character.finSlapAnimation();
     this.soundManager.playFinSlapSound();
-
     this.level.enemies.forEach((enemy) => {
       if (
         enemy instanceof Pufferfish &&
         !enemy.isDead &&
         this.character.isColliding(enemy)
       ) {
-        enemy.die();
+        this.character.pendingSlapHit = enemy;
       }
     });
   }
